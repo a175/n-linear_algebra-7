@@ -1,0 +1,469 @@
+% !TeX root =./x2.tex
+% !TeX program = pdfpLaTeX
+% \documentclass[a4paper,12pt,draft]{amsart}
+%\documentclass[a4paper,12pt]{amsart}
+\documentclass[tombow,dvipdfmx]{jsbook} 
+%\documentclass[draft,tombow,dvipdfmx]{jsbook} 
+\usepackage{amsmath, amssymb, amsthm,amsfonts}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{braket}
+%\usepackage{showkeys}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\usepackage{multicol}
+\usepackage{makeidx}
+\makeindex
+
+\usepackage{arydshln}
+\usepackage{japaneseaddonamsthm}
+\usepackage{numberedproof}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% theorems
+\theoremstyle{plain}
+\theoremstyle{japanese}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{theorem}[thm]{Theorem}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{corollary}[thm]{Corollary}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{prop}[thm]{Proposition}
+
+\newtheorem{condition}[thm]{Condition}
+
+\theoremstyle{remark}
+\theoremstyle{japanese}
+
+\newtheorem{remark}[thm]{Remark}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{example}[thm]{Example}
+\newtheorem{exercise}[thm]{Exercise}
+\newtheorem{note}[thm]{Note for the author}
+
+
+\newtheorem*{acknowledgment}{Acknowledgment}
+\newtheorem*{ackn}{Acknowledgment}
+
+
+\theoremstyle{definition}
+\theoremstyle{japanese}
+
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{dfn}[thm]{Definition}
+\newtheorem{algorithm}[thm]{Algorithm}
+\newtheorem{question}[thm]{Question}
+\newtheorem{problem}[thm]{Problem}
+\newtheorem{notation}[thm]{Notation}
+\newtheorem{conjecture}[thm]{Conjecture}
+\newtheorem{conj}[thm]{Conjecture}
+
+
+\theoremstyle{definition}
+\newtheorem{quiz}{問題}[chapter]
+
+\theoremstyle{numberedproof}
+\newtheorem{numberedproof}[thm]{Proof}
+\theoremstyle{japanesenumberedproof}
+\newtheorem{numberedanswer}[thm]{解説}
+%\newtheorem*{numberedanswer}{解説}
+
+\newcommand{\announceProveLater}[1]{%
+  \marginpar{\footnotesize 証明は\cref{#1}.}%
+}
+\newcommand{\announceProveEachItemLater}[1]{%
+  \marginpar{\footnotesize \Cref{#1}.}%
+}
+\newprovelater{\provelater}{\announceProveLater}{\announceProveEachItemLater}{\announceProveLater}
+\newcommand{\announceSolveLater}[1]{%
+  \marginpar{\footnotesize 略解は\cref{#1}.}%
+}
+\newcommand{\announceSolveEachItemLater}[1]{%
+  \marginpar{\footnotesize \Cref{#1}.}%
+}
+\newprovelater{\solvelater}{\announceSolveLater}{\announceSolveEachItemLater}{\announceSolveLater}
+
+\newnumberedproof{proofof}{numberedproof}{\callbackToAnnounceTheoremProvedHere}{\callbackToAnnounceTheoremItemProvedHere}
+\newnumberedproof{answerof}{numberedanswer}{\callbackToAnnounceTheoremProvedHere}{\callbackToAnnounceTheoremItemProvedHere}
+
+\newcommand{\seealsoquiz}[1]{\marginpar{\footnotesize\Cref{#1}は関連する問題である.}}
+%\newcommand{\seealsoQuiz}[1]{\marginpar{\footnotesize\Cref{#1}$\gets$}}
+\newcommand{\seealsoQuiz}[1]{\marginpar{\footnotesize 躓いたら\Cref{#1}も確認.}}
+%\newcommand{\Seealsoquiz}[1]{\marginpar{\footnotesize$\to$\Cref{#1}}}
+\newcommand{\Seealsoquiz}[1]{}
+
+% Cref
+\crefname{section}{Section}{Sections}
+
+\crefname{thm}{Theorem}{Theorems}
+\Crefname{thm}{Theorem}{Theorems}
+\crefname{theorem}{Theorem}{Theorems}
+\Crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\Crefname{corollary}{Corollary}{Corollaries}
+\crefname{cor}{Corollary}{Corollaries}
+\Crefname{cor}{Corollary}{Corollaries}
+\crefname{proposition}{Proposition}{Propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\crefname{prop}{Proposition}{Propositions}
+\Crefname{prop}{Proposition}{Propositions}
+\crefname{remark}{Remark}{Remarks}
+\Crefname{remark}{Remark}{Remarks}
+\crefname{rem}{Remark}{Remarks}
+\Crefname{rem}{Remark}{Remarks}
+\crefname{example}{Example}{Examples}
+\Crefname{Example}{Example}{Examples}
+\crefname{exercise}{Exercise}{Exercises}
+\Crefname{exercise}{Exercise}{Exercises}
+\crefname{definition}{Definition}{Definitions}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{dfn}{Definition}{Definitions}
+\Crefname{dfn}{Definition}{Definitions}
+\crefname{algorithm}{Algorithm}{Algorithms}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{question}{Question}{Questions}
+\Crefname{question}{Question}{Questions}
+\crefname{problem}{Problem}{Problems}
+\Crefname{problem}{Problem}{Problems}
+\crefname{notation}{Notation}{Notations}
+\Crefname{notation}{Notation}{Notations}
+\crefname{conjecture}{Conjecture}{Conjectures}
+\Crefname{conjecture}{Conjecture}{Conjectures}
+\crefname{conj}{Conjecture}{Conjectures}
+\Crefname{conj}{Conjecture}{Conjectures}
+\crefname{condition}{Condition}{Conditions}
+\Crefname{condition}{Condition}{Conditions}
+\crefname{numberedproof}{Proof}{Proofs}
+\Crefname{numberedproof}{Proof}{Proofs}
+\crefname{numberedanswer}{解説}{解説}
+\Crefname{numberedanswer}{解説}{解説}
+\crefname{quiz}{問題}{問題}
+\Crefname{quiz}{問題}{問題}
+
+% theorems 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% blackboard bold capital
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\KK}{\mathbb{K}}
+%
+% blackboard bold capital
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% caligraphic capital
+
+\newcommand{\AAA}{\mathcal{A}}
+\newcommand{\BBB}{\mathcal{B}}
+\newcommand{\CCC}{\mathcal{C}}
+\newcommand{\FFF}{\mathcal{F}}
+\newcommand{\TTT}{\mathcal{T}}
+\newcommand{\HHH}{\mathcal{H}}
+\newcommand{\SSS}{\mathcal{S}}
+\newcommand{\OOO}{\mathcal{O}}
+\newcommand{\KKK}{\mathcal{K}}
+\newcommand{\XXX}{\mathcal{X}}
+
+% caligraphic capital
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% bold italic
+
+\newcommand{\xx}{\boldsymbol{x}}
+\newcommand{\yy}{\boldsymbol{y}}
+\newcommand{\zz}{\boldsymbol{z}}
+\newcommand{\uu}{\boldsymbol{u}}
+\newcommand{\vv}{\boldsymbol{v}}
+\newcommand{\ww}{\boldsymbol{w}}
+\newcommand{\ee}{\boldsymbol{e}}
+\newcommand{\pp}{\boldsymbol{p}}
+\newcommand{\qq}{\boldsymbol{q}}
+\newcommand{\ttt}{\boldsymbol{t}}
+\newcommand{\aaa}{\boldsymbol{a}}
+\newcommand{\bbb}{\boldsymbol{b}}
+\newcommand{\ccc}{\boldsymbol{c}}
+
+\newcommand{\aalpha}{\boldsymbol{\alpha}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\llambda}{\boldsymbol{\lambda}}
+\newcommand{\mmu}{\boldsymbol{\mu}}
+
+\newcommand{\zzero}{\boldsymbol{0}}
+% bold italic
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands like  \det
+
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\len}{\operatorname{len}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\prob}{\operatorname{Pr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Char}{\operatorname{char}}
+\newcommand{\GCD}{\operatorname{GCD}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\Ad}{\operatorname{Ad}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Rad}{\operatorname{Rad}}
+\newcommand{\ad}{\operatorname{ad}}
+\newcommand{\RE}{\operatorname{Re}}
+\newcommand{\IM}{\operatorname{Im}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\corank}{\operatorname{corank}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\WCC}{\operatorname{WCC}}
+\newcommand{\height}{\operatorname{ht}}
+\newcommand{\Img}{\operatorname{Img}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\KR}{\operatorname{KR}}
+\newcommand{\SE}{\operatorname{SE}}
+\newcommand{\DE}{\operatorname{DE}}
+\newcommand{\aff}{\operatorname{aff}}
+\newcommand{\ver}{\operatorname{vert}}
+\newcommand{\Inv}{\operatorname{Inv}}
+\newcommand{\lp}{\operatorname{\texttt{lp}}}
+\newcommand{\reduce}{\operatorname{\texttt{reduce}}}
+\newcommand{\mono}{\operatorname{\texttt{mono}}}
+\newcommand{\iselement}{\operatorname{\texttt{isAnElement}}}
+\newcommand{\issubspace}{\operatorname{\texttt{isASubspace}}}
+
+% commands like  \det
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands for frak operatorname like sl
+
+\newcommand{\sL}{\mathfrak{sl}}
+\newcommand{\gl}{\mathfrak{gl}}
+
+% commands for bold operatorname
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands for italic operatorname like SL
+
+\newcommand{\SL}{\textit{SL}}
+\newcommand{\GL}{\textit{GL}}
+
+% commands for bold operatorname
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands for bold operatorname
+
+\newcommand{\abc}{\textbf{abc}}
+
+% commands for bold operatorname
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% misc
+
+\newcommand{\transposed}[1]{{\left.^{t}\!#1\right.}}
+\newcommand{\restrictedto}[1]{\bigr|_{#1}}
+\newcommand{\rightleq}{\mathrel{\underset{\text{R}}{\leq}}}
+\newcommand{\leftleq}{\mathrel{\underset{\text{L}}{\leq}}}
+\newcommand{\strongleq}{\mathrel{\leq}}
+
+\newcommand{\hconcat}[2]{\left(\begin{array}{c|c}#1& #2\end{array}\right)}
+\newcommand{\vconcat}[2]{\left(\begin{array}{c}#1\\\hline #2\end{array}\right)}
+
+
+% misc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% independent 
+\makeatletter
+\DeclareSymbolFont{symbolsC}{U}{txsyc}{m}{n}
+\DeclareMathSymbol{\MYPerp}{\mathrel}{symbolsC}{121}
+\makeatother
+
+\newcommand{\indep}{\MYPerp}
+% independent 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% bold or maltese-like plus 
+\makeatletter
+\DeclareFontEncoding{LS1}{}{}
+\DeclareFontSubstitution{LS1}{stix}{m}{n}
+\DeclareSymbolFont{symbols2}{LS1}{stixfrak}{m}{n}
+\DeclareMathSymbol{\tplus}{\mathbin}{symbols2}{"EB}
+\DeclareMathSymbol{\upin}{\mathrel}{symbols2}{"0E}
+\DeclareFontFamily{U}{matha}{\hyphenchar\font45}
+\DeclareFontShape{U}{matha}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * matha
+      <10.95> matha10 <12> <14.4> <17.28> <20.74> <24.88> matha12
+      }{}
+\DeclareSymbolFont{matha}{U}{matha}{m}{n}
+\DeclareFontSubstitution{U}{matha}{m}{n}
+\DeclareMathSymbol{\hash}{\mathbin}{matha}{"23}
+
+\makeatother
+%\newcommand{\pplus}{\tplus}
+\newcommand{\plus}{\tplus}
+\newcommand{\pplus}{\hash}
+\newcommand{\aact}{\mathbin{{}_\circ}}
+\newcommand{\act}{\mathbin{\boldsymbol{.}}}
+
+\newcommand{\Shazo}[4]{\begin{array}{ccc}\displaystyle #1&\longrightarrow&\displ
+aystyle #2\\[-0.4ex]\upin&&\upin\\[0ex]\textstyle #3&\longmapsto&\textstyle #4\e
+nd{array}}
+\newcommand{\shazo}[5]{\begin{array}{rcccc}\displaystyle #1&:&\displaystyle #2&\longrightarrow&\displaystyle #3\\[-0.4ex]&&\upin&&\upin\\[0ex]&&\textstyle #4&\longmapsto&\textstyle #5\end{array}}
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% misc (command)
+
+\newcommand{\der}{\partial}
+\newcommand{\numof}[1]{\left|#1\right|}
+%\newcommand{\numof}[1]{\#{#1}}
+
+% Ideal
+\newcommand{\ideal}[2]{%
+\left(#1 \mathrel{}\middle|\mathrel{}  #2\right)
+}
+
+\newcommand{\Provelater}{}
+
+\newcommand{\sectionX}[1]{\newpage\section*{#1}\addcontentsline{toc}{section}{#1}}
+
+
+
+\makeatletter
+\newcommand{\prev@index@word@nu}{}
+\newcommand{\defit}[1]{\renewcommand{\prev@index@word@nu}{#1}\index{#1}\emph{#1}}
+%\newcommand{\defit}[1]{\emph{#1}}
+\newcommand{\Defit}[1]{(\index{#1|see {\prev@index@word@nu}}\emph{#1})}
+\newcommand{\addindex}[1]{\index{#1|see {\prev@index@word@nu}}}
+\makeatother
+
+  \newcommand{\indexforcriterionofregularity}{%
+    \index{正則性の判定法}%
+    \index{正則性!---の判定法|see {正則性の判定法}}%
+    \index{正則!---性の判定法|see {正則性の判定法}}%
+    \index{判定!正則性の---法|see {正則性の判定法}}%
+  }
+% misc (command)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% misc (setting)
+
+\allowdisplaybreaks[3] %denine 0-4 allow
+
+% misc (setting)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewenvironment{theindex}{% 索引を3段組で出力する環境
+    \if@twocolumn
+      \onecolumn\@restonecolfalse
+    \else
+      \clearpage\@restonecoltrue
+    \fi
+    \columnseprule.4pt \columnsep 2zw
+    \ifx\multicols\@undefined
+    \twocolumn[%\section*{}%
+      \@makeschapterhead{\indexname}%
+      \addcontentsline{toc}{chapter}{\indexname}]%
+    \else
+      \ifdim\textwidth<\fullwidth
+        \setlength{\evensidemargin}{\oddsidemargin}
+        \setlength{\textwidth}{\fullwidth}
+        \setlength{\linewidth}{\fullwidth}
+        \begin{multicols}{3}[\chapter*{\indexname}%
+        \addcontentsline{toc}{chapter}{\indexname}]%
+      \else
+        \begin{multicols}{2}[\chapter*{\indexname}%
+        \addcontentsline{toc}{chapter}{\indexname}]%
+      \fi
+    \fi
+    \@mkboth{\indexname}{}%
+    \plainifnotempty % \thispagestyle{plain}
+    \parindent\z@
+    \parskip\z@ \@plus .3\jsc@mpt\relax
+    \let\item\@idxitem
+    \raggedright
+    \footnotesize\narrowbaselines
+  }{
+    \ifx\multicols\@undefined
+      \if@restonecol\onecolumn\fi
+    \else
+      \end{multicols}
+    \fi
+    \clearpage
+  }
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{線形代数学に関するメモ 6}
+
+\author{Yasuhide NUMATA}
+%\address{Department of Mathematics, Hokkaido University, Sapporo, Japan.}
+%\thanks{The first author was partially supported by JSPS KAKENHI Grant Number JP18K03206.}
+%\curraddr{}
+%\email{nu@math.sci.hokudai.ac.jp}
+% \urladdr{}
+
+\maketitle
+
+% Introduction
+
+% Main part
+\input{p.tex}
+
+% References
+%\bibliography{by-mr,by-arxiv,by-isbn-j}
+\bibliography{by-isbn-j}
+%\bibliographystyle{amsplain-url}
+\bibliographystyle{jplain}
+
+% appendix
+%\appendix
+%\input{e.tex}
+%\input{a.tex}
+%\input{b.tex}
+
+{\printindex}
+\end{document}
+

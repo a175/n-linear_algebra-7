@@ -1,0 +1,1552 @@
+% !TeX root =./x2.tex
+% !TeX program = pdfpLaTeX
+
+
+\chapter{数ベクトル空間での計算方法}
+
+ここでは,
+$\KK$を体とし,
+$\KK$上の数ベクトル空間において,
+諸々の概念を計算する方法について紹介する.
+
+\section{\Cref{chap:prelim}に関連すること}
+行列に対する以下の操作を行基本変形と呼んだ:
+\begin{enumerate}
+\item $i$行目を$c$倍する. (ただし, $c\neq 0$.)
+\item $i$行目に$j$行目の$a$倍を加える. (ただし, $i\neq j$.)
+\item $i$行目と$j$行目を入れ替える. (ただし, $i\neq j$.)
+\end{enumerate}
+また,
+行列に対する以下の操作を列基本変形と呼んだ:
+\begin{enumerate}
+\item $i$列目を$c$倍する. (ただし, $c\neq 0$.)
+\item $j$列目に$i$列目の$a$倍を加える. (ただし, $i\neq j$.)
+\item $i$列目と$j$列目を入れ替える. (ただし, $i\neq j$.)
+\end{enumerate}
+これらを使ってどんな行列も行列
+被役行階段行列や
+被役列階段行列と呼ばれる形に変形できた.
+行列に対する行基本変形や列基本変形は,
+実際には行ベクトル, 列ベクトルに対する操作である.
+その観点から用語や計算方法を整理する.
+
+$I=\Set{1,\ldots,m}$とし,
+$\aaa=(a_i)_{i\in I}\in \KK^m\setminus\Set{\zzero_m}$
+とする.
+$\min\Set{i\in I |a_i\neq 0}$
+を$\aaa$のpivotもしくはleading positionと呼ぶことにし,
+$\lp(\aaa)$で表す.
+また,
+$i_0=\lp(\aaa)$に対し,
+$a_{i_0}=1$を満たしているときに,
+$\aaa$はmonicであるということにする.
+また$X\subset \RR^m\setminus\Set{\zzero_m}$に対し,
+次の条件を満たしているとき, $\aaa=(a_i)_{i\in I}\in\RR^m$は$X$で被役であるとか簡約済みであるということにする:
+\begin{align*}
+  \bbb\in X, i=\lp(\bbb) \implies
+  a_{i}=0.
+\end{align*}
+列ベクトルでも行ベクトルでも同じ用語や記号を用いることにする.
+
+便宜的に$\lp(\zzero)=\infty$とし, 
+$\zzero$もmonicであるとし,
+$\infty$は$\infty<\infty$を満たすとしておくと,
+$A=(\aaa_1|\cdots|\aaa_n)$と列ベクトル表示された行列が
+被役列階段行列であることは, 以下のように述べることができる:
+\begin{enumerate}
+\item
+  $j\in\Set{1,\ldots,n}\implies \aaa_j$はmonic.
+\item
+  $j\in\Set{1,\ldots, n-1} \implies \lp(\aaa_j)<\lp(\aaa_{j+1})$.
+\item
+  $j\in\Set{1,\ldots, n}, j'\in \Set{1,\ldots, n}\setminus\Set{j}\implies \lp(\aaa_{j'})=\infty$
+  または$\aaa_j$の$\lp(\aaa_{j'})$-成分は$0$.
+\end{enumerate}
+被役列階段行列$A=(\aaa_1|\cdots|\aaa_n)$において,
+その列ベクトルの並びは
+$\lp(\aaa_j)<\lp(\aaa_{j+1})$で完全にきまる.
+また, 列数がわかっていれば, 足りない分を零ベクトルとすればよいので,
+零ベクトルではない列ベクトルの集合$\Set{\aaa_j|\aaa_j\neq \zzero_m}$
+の情報から$A$は復元できる.
+そこで, 
+被役列階段行列$A=(\aaa_1|\cdots|\aaa_n)$と,
+列ベクトルの集合$\Set{\aaa_j|\aaa_j\neq \zzero_m}$を同一視する.
+この見方からは,
+被役列階段行列とは,
+次の条件を満たす$X\subset \RR^m\setminus\Set{\zzero_m}$である:
+\begin{enumerate}
+\item
+  $\aaa\in X$はmonic.
+\item
+  $\aaa\in X\implies \aaa$は$X\setminus \Set{\aaa}$で簡約済み.
+\end{enumerate}
+行ベクトル表示された
+被役行階段行列に関しても同様のことを考えることができる.
+被役列階段行列と同様に,
+被役行階段行列と条件を満たす零ベクトルではない行ベクトルの集合を同一視する.
+
+行列に基本変形を行い
+被役階段行列を得る手順を考えるため,
+まずは,
+次の計算手続きを考える:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+数ベクトル$\aaa\in \KK^m$,
+有限集合$X\subset\KK^m\setminus\Set{\zzero_m}$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $a_i$を$(a_i)_{i\in I}=\aaa$で定義する.
+  \item $a_{\lp(\bbb)}\neq 0$となる$\bbb\in X$がある間, 以下を繰り返す:
+    \begin{enumerate}
+    \item $\bbb\in X$が$a_{\lp(\bbb)}\neq 0$をみたすとする.
+    \item $i_0$を$i_0=\lp(\bbb)$で定義する.
+    \item $b_i$を$(b_i)_{i\in I}=\bbb$で定義する.
+    \item $\ccc=(a_i)_{i\in I}-\frac{a_{i_0}}{b_{i_0}}(b_i)_{i\in I}$とする.
+    \item $a_i$を$(a_i)_{i\in I}=\ccc$となるよう更新する.
+    \end{enumerate}
+  \item $(a_i)_{i\in I}$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+$a_{\lp(\bbb)}\neq 0$となる$\bbb\in X$の選び方を指定していないので,
+考えにくいものの,
+この手続きは有限回のステップで必ず終了し数ベクトルを出力する.
+その出力を$\reduce(\aaa,X)$で表すことにする.
+$\reduce(\aaa,X)$は
+$X$で簡約済みである.
+また, その作り方から,
+$\reduce(\aaa,X)=\aaa+\sum_{\bbb\in X}c_{\bbb} \bbb$
+を満たす$c_{\bbb}\in\KK$が存在する.
+\begin{remark}
+  なおこの手続きのように,
+  有限回のステップで必ず終了する手続きをアルゴリズムと呼ぶ.
+\end{remark}
+\begin{remark}
+  \label{rem:reduce:proj}
+  一般の有限集合$X\subset \KK^n$においては,
+  $\lp(\bbb)=\lp(\bbb')$となる$\bbb,\bbb'\in X$が複数ある場合がある.
+  その場合どちらを選ぶのかによって出力される数ベクトルが異なる可能性がある.
+  $\bbb,\bbb'\in X,\lp(\bbb)=\lp(\bbb')\implies \bbb=\bbb'$を満たすときには,
+  $\reduce(\aaa,X)$はその手順によらずただ一つに定まる.
+  とくに,
+  $X$が被役列階段行列であるとすると,
+  $\aaa=(a_i)_{i\in I}\in \KK^m$に対し,
+  \begin{align*}
+    \reduce(\aaa,X)=\aaa-\sum_{\bbb\in X}a_{\lp(\bbb)}\bbb
+  \end{align*}
+  と閉じた式で書くことができる.
+\end{remark}
+$\aaa=(a_i)_{i\in I}\in \RR^m\setminus\Set{\zzero_{m}}$に対し,
+$a_{\lp(\aaa)}\neq 0$であり, その逆数によるスカラー倍
+\begin{align*}
+  \frac{1}{a_{\lp(\aaa)}}\aaa
+\end{align*}
+はmonicである.
+これを$\mono(\aaa)$と書く.
+
+有限集合$X\subset\KK^m$を
+基本変形で
+被役階段行列にする方法は,
+例えば,
+$\reduce$, $\mono$を使って
+以下のように書ける:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$X\subset\KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $X\setminus\Set{\bbb}$で簡約済みでない$\bbb\in X$が存在する間,
+    以下を繰り返す:
+    \begin{enumerate}
+    \item $\bbb\in X$が$X\setminus\Set{\bbb}$で簡約済みでないとする.
+    \item $X'=X\setminus\Set{\bbb}$とおく.
+    \item $\aaa=\reduce(\bbb,X')$とおく.
+    \item $X$を$X'\cup \Set{\aaa}$となるよう更新する.
+    \end{enumerate}
+  \item $\Set{\mono(\aaa)|\aaa\in X\setminus\Set{\zzero_m}}$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+この手続きは有限回のステップで必ず終了し数ベクトルからなる有限集合を出力する.
+その出力を$\reduce(X)$で表すことにする.
+行列$A=(\aaa_1|\cdots|\aaa_n)$に対し,
+$X=\Set{\aaa_1,\ldots,\aaa_n}$としたときの,
+このアルゴリズムによる出力$\reduce(X)$を$\reduce_c(A)$と書くことにする.
+$\reduce_c(A)$は,
+$A$に列基本変形を行うことで得られる
+被役列階段行列である.
+
+$\reduce$, $\mono$で行った操作は行ベクトルに対しても同様に定義することができる.
+行ベクトルに対する操作も同じ記号で書くことにする.
+行列$A$の行ベクトル分解を考え,
+その行ベクトルの集合$X$に対する$\reduce(X)$を
+$\reduce_{r}(A)$と書く.
+$\reduce_r(A)$は,
+$A$に行基本変形を行うことで得られる
+被役行階段行列である.
+
+行列$A$の階数は,
+基本変形によって得られる被役階段行列の非零なベクトルの総数であったので,
+次のように計算できる:
+$\#\reduce_r(A)=\#\reduce_c(A)=\rank(A)$,
+
+
+
+\section{\Cref{chap:linspace:linmap}に関連すること}
+\Cref{prop:linmap:kn:1,prop:linmap:kn:2}
+より,
+$\KK^n$から$\KK^m$への$\KK$-線形写像は,
+$A\in \KK^{m\times n}$から作られる
+\begin{align*}
+  \shazo{\mu_A}{\KK^m}{\KK^n}{w}{Aw}
+\end{align*}
+を考えれば十分である.
+とくに,
+$\varphi(\ee^{(n)}_j)=\aaa_j$である$\KK$-線形写像は,
+$A=(\aaa_1|\cdots|\aaa_n)$を使って,
+$\mu_A$と書ける.
+$\KK$が体であることから以下が成り立つ:
+\begin{enumerate}
+\item $\mu_A$が単射であることと$\rank(A)=n$は同値.
+\item $\mu_A$が全射であることと$\rank(A)=m$は同値.
+\end{enumerate}
+したがって, $\mu_A$の全射性や単射性は,
+$\reduce_r(A)$を計算することで調べることができる.
+特に, 
+$\mu_A$が同型写像であることと,
+$A$が正則行列であることは同値であるが,
+これらは,
+$\rank(A)=n=m$は同値であるので,
+これも$\reduce_r(A)$を計算することで調べることができる.
+\begin{remark}
+  $A$が正方行列であるとき,
+  $A$が正則行列であることと,
+  $\det(A)$が逆数をもつ, つまり$0$ではない
+  ことは同値であるので,
+  $A$の行列式を使っても$\mu_A$が同型写像かどうかを調べることができる.
+\end{remark}
+
+また,
+写像の和, スカラー倍, 合成は以下のように行列の計算として計算できる:
+\begin{align*}
+  \mu_{A}+\mu_{A'}&=\mu_{A+A'}\\
+  c\mu_{A}&=\mu_{cA}\\
+  \mu_{A}\circ \mu_B&=\mu_{AB}.
+\end{align*}
+
+\section{\Cref{chap:subspace}に関連すること}
+
+まず,
+$A\in \KK^{m\times n}$から作られる線形写像
+\begin{align*}
+  \shazo{\mu_A}{\KK^m}{\KK^n}{w}{Aw}
+\end{align*}
+について考え,
+これらの像と核を計算する方法を考える.
+
+$\mu_A$の像は, $A=(\aaa_1|\cdots|\aaa_n)$と列ベクトル表示をすると,
+定義から
+\begin{align*}
+  \Img(\mu_A)&=\Set{c_1\aaa_1+\cdots+c_n\aaa_n|c_1,\ldots,c_n\in \KK}\\
+  &=\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}
+\end{align*}
+である. したがって, アルゴリズムとして書くなら以下のようになる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  行列$A\in\KK^{m\times n}$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $(\aaa_1|\cdots|\aaa_n)=A$と列ベクトル分解する.
+  \item $\Set{\aaa_1,\ldots,\aaa_n}$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+$\mu_A$の核は,
+定義から
+\begin{align*}
+  \Ker(\mu_A)=\Set{\aaa\in \KK^m |A\aaa=\zzero_n}
+\end{align*}
+である.
+つまり,
+$\xx$に関する方程式$A\xx=\zzero_n$の解空間である.
+これは,
+$A$から行基本変形で得られる被役行階段行列を計算することで,
+求めることができる.
+具体的には例えば次のように解くことができる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  行列$A\in\KK^{m\times n}$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $\bar A=\reduce_r(A)$とする.
+  \item $J=\Set{1,\ldots,n}$とする.
+  \item $\hat J=\Set{\lp(\aaa)|\aaa\in\bar  A }$とする. 
+  \item $\check J=\Set{1,\ldots,n}\setminus \hat J$とする.
+  \item $j\in \check J$に対し,
+    以下を行う:
+    \begin{enumerate}
+    \item $\bbb_j$を次で定義する:
+      \begin{align*}
+        \bbb_j = \ee^{(m)}_j - \sum_{\aaa=(a_i)_{i\in J}\in\bar A}a_j \ee^{(m)}_{\lp(\aaa)}.
+        \end{align*}
+    \end{enumerate}
+  \item $\Set{\bbb_j|j\in \check J}$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+このアルゴリズムで得られる出力を$\Set{\bbb_{j_1},\ldots,\bbb_{j_{n-r}}}$とすると,
+\begin{align*}
+  \Set{c_1\bbb_{j_1}+\cdots+c_{n-r}\bbb_{j_{n-r}}|c_1,\ldots,c_{n-r}\in\KK}
+=\Braket{\bbb_{j_1},\ldots,\bbb_{j_{n-r}}}_{\KK}
+\end{align*}
+は,
+$\xx$に関する方程式$A\xx=\zzero_n$の解空間である.
+つまり$\Ker(\mu_A)$である.
+
+
+次に,
+$\KK^m$の部分空間
+\begin{align*}
+  \Braket{\aaa_1,\ldots,\aaa_n}_{\KK}
+  &=\Set{c_1\aaa_1+\cdots+c_n\aaa_n|c_1,\ldots,c_n\in \KK}\\
+  \Braket{\bbb_1,\ldots,\bbb_l}_{\KK}
+  &=\Set{c_1\bbb_1+\cdots+c_l\bbb_l|c_1,\ldots,c_l\in \KK}
+\end{align*}
+の和空間と共通部分を計算する方法について考える.
+
+和空間は次を使えばわかる:
+\begin{prop}
+  $\aaa_1,\ldots,\aaa_n,\bbb_1,\ldots,\bbb_l\in\KK^m$に対し,
+  \begin{align*}
+    \Braket{\aaa_1,\ldots,\aaa_n}_{\KK}+\Braket{\bbb_1,\ldots,\bbb_l}_{\KK}
+    =
+    \Braket{\aaa_1,\ldots,\aaa_n,\bbb_1,\ldots,\bbb_l}_{\KK}.
+  \end{align*}
+\end{prop}
+アルゴリズムとして書くなら以下のようになる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A,B\subset \KK^m$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+    \item $A\cup B$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+共通部分を計算するには, 次の補題を使う.
+\begin{lemma}
+  $U$を$\KK$-線形空間とし,
+  $V,W$を$U$の部分空間とする.
+  このとき,
+  \begin{align*}
+    \tilde V&=\Set{(v,-v)\in U\boxplus U|v\in V} \\
+    \check W&=\Set{(w,0_U)\in U\boxplus U|w\in W} \\
+    \hat U&=\Set{(0_U,u)\in U\boxplus U|u\in U}
+  \end{align*}
+  とおく.
+  また,
+  \begin{align*}
+    \check X &= (\tilde V + \check W) \cap \hat U \\
+    X&=\Set{x|(0_U,x) \in\check X}
+  \end{align*}
+  とする.
+  このとき, $X=V\cap W$.
+\end{lemma}
+この補題により共通部分は以下のように計算できる.
+\begin{prop}
+  $\aaa_1,\ldots,\aaa_n,\bbb_1,\ldots,\bbb_l\in\KK^m$に対し,
+  \begin{align*}
+    X=\reduce(\Set{
+    \begin{pmatrix}\aaa_1\\-\aaa_1\end{pmatrix},
+      \ldots,
+      \begin{pmatrix}\aaa_n\\-\aaa_n\end{pmatrix},
+      \begin{pmatrix}\bbb_1\\\zzero_m\end{pmatrix},
+      \ldots,
+      \begin{pmatrix}\bbb_l\\\zzero_m\end{pmatrix}
+})
+  \end{align*}
+  とし,
+  \begin{align*}
+    \check X=\Set{\begin{pmatrix}\aaa\\\bbb\end{pmatrix}\in X|\aaa=\zzero_m}
+  \end{align*}
+  とする.
+  $\check X=\Set{\ccc_1,\ldots,\ccc_k}$
+  とすると,
+  \begin{align*}
+    \Braket{\aaa_1,\ldots,\aaa_n}\cap \Braket{\bbb_1,\ldots,\bbb_l}=\Braket{\ccc_1,\ldots,\ccc_k}.
+  \end{align*}
+\end{prop}
+アルゴリズムとして書くなら以下のようになる:
+\begin{algorithm}\label{alg:intersection}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A,B\subset \KK^m$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item
+    $\tilde A=\Set{\begin{pmatrix}\aaa_1\\-\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_n\\-\aaa_n\end{pmatrix}}$
+    とする.
+  \item
+    $\tilde B=\Set{\begin{pmatrix}\bbb_1\\\zzero_m\end{pmatrix},\ldots,\begin{pmatrix}\bbb_l\\\zzero_m\end{pmatrix}}$
+    とする.
+  \item $X=\reduce(\tilde A\cup \tilde B)$とする.
+  \item $\check X=\Set{\begin{pmatrix}\aaa\\\bbb\end{pmatrix}\in \tilde X|\aaa=\zzero_m}$とする.
+  \item $\Set{\bbb|\begin{pmatrix}\zzero_m\\\bbb\end{pmatrix}\in\check X}$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+\section{\Cref{chap:basis}に関連すること}
+
+まず, 一次独立性について考える.
+与えられたベクトルの組が一次独立であるかを調べるには次を使う:
+\begin{prop}
+  $A=(\aaa_1|\cdots|\aaa_n)\in\KK^{m\times n}$に対して以下は同値:
+  \begin{enumerate}
+  \item $(\aaa_1,\ldots,\aaa_n)$は$\KK$上一次独立.
+  \item $\rank(A)=n$.
+  \end{enumerate}
+\end{prop}
+アルゴリズムとして書くなら以下のようになる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A\subset \KK^m$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item
+    $\bar A=\reduce(A)$
+    とする.
+  \item
+    $\# A= \#\bar A$なら次を行う:
+    \begin{enumerate}
+    \item \texttt{True}を出力し終了.
+    \end{enumerate}
+    そうでないなら次を行う:
+    \begin{enumerate}
+    \item \texttt{False}を出力し終了.
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+次に,
+生成系で与えられた部分空間について考える.
+一般に次が成り立つ:
+\begin{lemma}
+  \label{lem:gen:inclusion}
+  $U$を$\KK$線形空間とする.
+  $v_1,\ldots,v_n,w_1,\ldots,w_m\in U$に対し,
+  以下は同値:
+  \begin{enumerate}
+  \item $\Braket{v_1,\ldots,v_n}_{\KK}\subset\Braket{w_1,\ldots,w_m}_{\KK}$.
+  \item $\Set{v_1,\ldots,v_n}_{\KK}\subset\Braket{w_1,\ldots,w_m}_{\KK}$.
+  \end{enumerate}
+\end{lemma}
+したがって,
+次が成り立つ:
+\begin{lemma}
+  $U$を$\KK$線形空間とする.
+  $v_1,\ldots,v_n,w_1,\ldots,w_m\in U$に対し,
+  以下は同値:
+  \begin{enumerate}
+  \item $\Braket{v_1,\ldots,v_n}_{\KK}=\Braket{w_1,\ldots,w_m}_{\KK}$.
+  \item $\Set{v_1,\ldots,v_n}_{\KK}\subset\Braket{w_1,\ldots,w_m}_{\KK}$かつ
+    $\Set{w_1,\ldots,w_m}_{\KK}\subset\Braket{v_1,\ldots,v_n}_{\KK}$.
+  \end{enumerate}
+\end{lemma}
+また,
+数ベクトル空間に対して次が成り立つ:
+\begin{lemma}
+  \label{lem:samespace:reducedech}
+  $\aaa_1,\ldots,\aaa_n\in\KK^m$とする.
+  $\aaa\in\KK^m$とし,
+  $\bar\aaa=\reduce(\aaa,\Set{\aaa_1,\ldots,\aaa_n})$とする.
+  このとき,
+  \begin{align*}
+    \Braket{\aaa,\aaa_1,\ldots,\aaa_n}_{\KK}
+    =
+    \Braket{\bar\aaa,\aaa_1,\ldots,\aaa_n}_{\KK}.
+  \end{align*}
+\end{lemma}
+したがって, 次が得られる:
+\begin{lemma}
+  $\aaa_1,\ldots,\aaa_n\in\KK^m$とする.
+  $\Set{\bbb_1,\ldots,\bbb_r}=\reduce(\Set{\aaa_1,\ldots,\aaa_n})$とする.
+  このとき,
+  \begin{align*}
+    \Braket{\aaa_1,\ldots,\aaa_n}_{\KK}
+    =
+    \Braket{\bbb_1,\ldots,\bbb_r}_{\KK}.
+  \end{align*}
+\end{lemma}
+
+
+また,
+$\Set{\aaa_1,\ldots,\aaa_n}$は被役階段行列であるときに,
+$\aaa\in\KK^m$が$\Braket{\aaa_1,\ldots,\aaa_n}$の元であるかどうかは,
+次を使えば調べられる.
+\begin{prop}
+  \label{prop:subspace:belong:prob}
+  $\aaa,\aaa_1,\ldots,\aaa_n\in\KK^m$とし,
+  $\Set{\aaa_1,\ldots,\aaa_n}$は被役階段行列であるとする.
+  このとき,
+  以下は同値:
+  \begin{enumerate}
+  \item $\aaa\in\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$.
+  \item $\reduce(\aaa,\Set{\aaa_1,\ldots,\aaa_n})=\zzero_m$.
+  \end{enumerate}
+\end{prop}
+したがって,
+生成系により与えられた部分空間に特定のベクトルが含まれるかどうかは,
+は次のように調べればよい:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+ $\aaa\in\KK^m$, 有限集合$A\subset \KK^m$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $\bar A=\reduce(A)$
+  \item $\bar\aaa=\reduce(\aaa,\bar A)$とおく.
+  \item $\bar\aaa=\zzero_m$ならば次を行う:
+    \begin{enumerate}
+    \item \texttt{True}を出力し終了.
+    \end{enumerate}
+  そうでないなら次を行う:
+    \begin{enumerate}
+    \item \texttt{False}を出力し終了.
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+%% このアルゴリズムによる出力を$\iselement(\aaa,A)$と書くことにする.
+%% $\iselement(\aaa,\Set{\aaa_1,\ldots,\aaa_n})$は,
+%% $\aaa\in\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$なら\texttt{True},
+%% そうでないなら\texttt{False}となる.
+
+与えられた部分空間の包含関係を調べるには,
+\Cref{lem:gen:inclusion}を利用し,
+次のようにすれば良い:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+ 有限集合$A, B\subset \KK^m$ 
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $\bar B=\reduce(B)$.
+  \item $\aaa\in A$に対し, 以下を行う:
+    \begin{enumerate}
+    \item $\reduce(\aaa,\bar B)\neq\zzero_m$なら次を行う:
+      \begin{enumerate}
+      \item \texttt{False}を出力し終了.
+      \end{enumerate}
+    \end{enumerate}
+  \item \texttt{True}を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+%% このアルゴリズムによる出力を$\issubspace(A,B)$と書くことにする.
+%% $A=\Set{\aaa_1,\ldots,\aaa_n}$,
+%% $B=\Set{\bbb_1,\ldots,\bbb_l}$に対し,
+%% $\issubspace(A,B)$は,
+%% $\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}=\Braket{\bbb_1,\ldots,\bbb_l}_{\KK}$なら\texttt{True},
+%% そうでないなら\texttt{False}となる.
+
+与えられた部分空間が等しいかどうかは,
+このアルゴリズムを用いて,
+$\Set{\aaa_1,\ldots,\aaa_n}\subset \Braket{\bbb_1,\ldots,\bbb_l}$と
+$\Braket{\aaa_1,\ldots,\aaa_n}\supset \Set{\bbb_1,\ldots,\bbb_l}$を
+調べてもよいが,
+\Cref{lem:samespace:reducedech}
+被役列階段行列の唯一性により, 次で計算できる.
+\begin{prop}
+  \label{prop:reducedech:subspace:eq:criterion}
+  $\aaa_1,\ldots,\aaa_n,\bbb_1,\ldots,\bbb_l\in\KK^m$に対し,
+  以下は同値:
+  \begin{enumerate}
+  \item $\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}=\Braket{\bbb_1,\ldots,\bbb_l}_{\KK}$.
+  \item $\reduce(\Set{\aaa_1,\ldots,\aaa_r})=\reduce(\Set{\bbb_1,\ldots,\bbb_l})$.
+  \end{enumerate}
+\end{prop}
+アルゴリズムとして書くなら以下のようになる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A,B\subset \KK^m$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $\bar A=\reduce(A)$とおく.
+  \item $\bar B=\reduce(B)$とおく.
+  \item $\bar A=\bar B$ならば次を行う:
+    \begin{enumerate}
+    \item \texttt{True}を出力し終了.
+    \end{enumerate}
+  そうでないなら次を行う:
+    \begin{enumerate}
+    \item \texttt{False}を出力し終了.
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+
+次に, 与えられた部分空間の基底を求める方法について考える.
+\Cref{lem:samespace:reducedech}と
+被役列階段行列の列ベクトルは一次独立であることから,
+$\Set{\bbb_1,\ldots,\bbb_r}=\reduce(\Set{\aaa_1,\ldots,\aaa_n})$に対し,
+$(\bbb_1,\ldots,\bbb_r)$は$\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$
+の基底である.
+したがって,
+$\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$
+の基底を何か一つ与えたいときには,
+$\reduce(\Set{\aaa_1,\ldots,\aaa_n})$
+を計算するだけで良い.
+また, \Cref{prop:reducedech:subspace:eq:criterion,prop:subspace:belong:prob}などもあるので,
+この基底は有用である.
+
+一方,
+一般には
+$\reduce(A)\subset A$ではない.
+与えられた生成系に含まれるベクトルを用いて基底を与えるには,
+基底は極大な一次独立集合であることを用い,
+次のように計算すればよい:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A\subset \KK^m$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $X=\Set{ \aaa\in A|\aaa\neq \zzero_m}$とおく.
+  \item $B=\emptyset$とおく.
+  \item $\bar B=\emptyset$とおく.
+  \item $X\neq\emptyset$の間以下を行う:
+    \begin{enumerate}
+    \item $\bbb\in X$とする.
+    \item $B$に$\bbb$を付け加える.
+    \item $\bar B$を$\reduce(\bar B\cup \Set{\bbb})$となるよう更新する.
+    \item $X$を$\Set{\aaa\in X| \reduce(\aaa,\bar B)\neq \zzero_m}$となるよう更新する.
+    \end{enumerate}
+  \item $B$を出力して終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+また,
+すでに与えられている一次独立なベクトル達を延長して,
+基底を得るためには以下のように計算すれば良い:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A\subset \KK^m$,
+  有限集合$B\subset \Braket{A}_{\KK}$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $\bar B=\reduce(B)$とおく.
+  \item $\#\bar B \neq \# B$なら, 次を行う:
+    \begin{enumerate}
+    \item エラー(与えられた$B$が一次独立ではない)として終了する.
+    \end{enumerate}
+  \item $X=\Set{ \aaa\in A|\reduce(\aaa,\bar B)\neq \zzero_m}$とおく.
+  \item $X\neq\emptyset$の間以下を行う:
+    \begin{enumerate}
+    \item $\bbb\in X$とする.
+    \item $B$に$\bbb$を付け加える.
+    \item $\bar B$を$\reduce(\bar B\cup \Set{\bbb})$となるよう更新する.
+    \item $X$を$\Set{\aaa\in X| \reduce(\aaa,\bar B)\neq \zzero_m}$となるよう更新する.
+    \end{enumerate}
+  \item $B$を出力して終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+\section{\Cref{chap:quotient}に関連すること}
+
+$X\subset\KK^m$を被役列階段行列とする.
+このとき, $\aaa\in\KK^m$に対し,
+$\reduce(\aaa,X)$が閉じた式で書けることを
+\Cref{rem:reduce:proj}では見た.
+この表示から
+\begin{align*}
+  \shazo{\varphi}{\KK^m}{\KK^m}
+        {\aaa}{\reduce(\aaa,X)}
+\end{align*}
+が$\KK$線形写像であることがすぐわかる.
+また,
+\begin{align*}
+  \check I&=\Set{\lp(\bbb)|\bbb\in X},\\
+  \hat I&=\Set{1,\ldots,m}\setminus\check I
+\end{align*}
+とし,
+$\Set{j_1,\ldots,j_r}=\hat I$とおくと,
+$\Img(\varphi)=\Braket{\ee^{(m)}_{j_1},\ldots,\ee^{(m)}_{j_r}}_{\KK}$である.
+また, $\reduce(\ee^{(m)}_{j_k},X)=\ee^{(m)}_{j_k}$であるので,
+$\varphi\circ\varphi=\varphi$である.
+
+
+\Cref{prop:subspace:belong:prob}で見たように,
+$\Set{\aaa_1,\ldots,\aaa_n}$は被役階段行列であるときに,
+$\aaa\in\KK^m$が$\Braket{\aaa_1,\ldots,\aaa_n}$の元であるかどうかは,
+$\reduce(\aaa,\Set{\aaa_1,\ldots,\aaa_n})$が$\zzero_m$であるかどうかを調べればよい.
+さらに次のこともわかる:
+\begin{prop}
+  \label{prop:quotient:reduce}
+  $\aaa_1,\ldots,\aaa_n\in\KK^m$とし,
+  $\Set{\aaa_1,\ldots,\aaa_n}$は被役列階段行列であるとする.
+  また, $V=\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$とおく.
+  このとき,
+  $\aaa,\bbb\in \KK^m$に対し,
+  以下は同値:
+  \begin{enumerate}
+  \item $\aaa-\bbb\in V$.
+  \item $[\aaa]_V=[\bbb]_V$.
+  \item $\reduce(\aaa,\Set{\aaa_1,\ldots,\aaa_n})=\reduce(\bbb,\Set{\aaa_1,\ldots,\aaa_n})$.
+  \end{enumerate}
+\end{prop}
+$A=\Set{\aaa_1,\ldots,\aaa_n}$は被役階段行列であり,
+$V=\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$とする.
+このとき,
+\Cref{prop:quotient:reduce}があるので,
+ベクトルが等しいかどうかは$A$で簡約済みのベクトルを比較すればよい.
+また,
+$\aaa\in\KK^n$に対し$\reduce(\aaa,X)$を対応させる写像が$\KK$-線形写像
+であり$\varphi\circ\varphi=\varphi$であるので,
+線型結合を考えるときは,
+簡約済みのベクトルの線型結合を考えても,
+線型結合考えてから簡約してもよいことがわかる.
+さらに,
+$\check I=\Set{\lp(\bbb)|\bbb\in X}$,
+$\hat I=\Set{1,\ldots,m}\setminus\check I$とし,
+$\Set{j_1,\ldots,j_r}=\hat I$とおくと,
+$([\ee^{(m)}_{j_1}]_V,\ldots,[\ee^{(m)}_{j_r}]_V)$は,
+$\KK^m/V$の基底である.
+
+
+
+\section{\Cref{chap:repmat}に関連すること}
+$\KK^n$の部分空間から
+$\KK^m$の部分空間への線形写像の計算についてここでは考える.
+
+\begin{prop}
+  \label{prop:linmap:calc:elm}
+  $V$, $W$を$\KK$線形空間とし,
+  $\varphi\colon V\to W$を$\KK$線形写像とする.
+  \begin{align*}
+    \tilde V &=\Set{(v,0_W)\in V\boxplus W|v\in V}\\
+    \tilde W &=\Set{(0_V,w)\in V\boxplus W|w\in W}\\
+    F&=\Set{(v,-\varphi(v))\in V\boxplus W|v\in V}
+  \end{align*}
+  とする.
+  このとき,
+  $\tilde V$,
+  $\tilde W$,
+  $F$は
+  $V\boxplus W$
+  の部分空間である.
+  また,
+  $(v,0_W)\in \tilde V$,
+  $(0_V,w)\in\tilde W$,
+  $(x,y)\in F$が
+  $(v,0_W)+(x,y)=(0_V,w)$
+  を満たすならば,
+  $w=\varphi(v)$である.
+\end{prop}
+このことから次がわかる.
+\begin{prop}
+  \label{prop:linmap:calc:img}
+  $V$, $W$を$\KK$線形空間とし,
+  $\varphi\colon V\to W$を$\KK$線形写像とする.
+  $V'$を$V$の部分空間,
+  $W'$を$W$の部分空間とする.
+  \begin{align*}
+    \tilde V &=\Set{(v,0_W)\in V\boxplus W|v\in V}\\
+    \tilde V' &=\Set{(v,0_W)\in V\boxplus W|v\in V'}\\
+    \tilde W &=\Set{(0_V,w)\in V\boxplus W|w\in W}\\
+    \tilde W' &=\Set{(0_V,w)\in V\boxplus W|w\in W'}\\
+    F&=\Set{(v,-\varphi(v))\in V\boxplus W|v\in V}
+  \end{align*}
+  とおく.
+  \begin{align*}
+    X&=(\tilde W'+F)\cap \tilde V\\
+    Y&=(\tilde V'+F)\cap \tilde W
+  \end{align*}
+  とすると,
+  \begin{align*}
+    \Set{(x,0_W)|\varphi(x)\in W'}&=X,\\
+    \Set{(0_V,\varphi(x))|x\in V'}&=Y.
+  \end{align*}
+\end{prop}
+\begin{cor}
+  $V$, $W$を$\KK$線形空間とし,
+  $\varphi\colon V\to W$を$\KK$線形写像とする.
+  \begin{align*}
+    \tilde V &=\Set{(v,0_W)\in V\boxplus W|v\in V}\\
+    F&=\Set{(v,-\varphi(v))\in V\boxplus W|v\in V}
+  \end{align*}
+  とおく.
+  \begin{align*}
+    X&=F\cap \tilde V
+  \end{align*}
+  とすると,
+  \begin{align*}
+    \Set{(x,0_W)|x\in\Ker(\varphi)}&=X.
+  \end{align*}
+\end{cor}
+\begin{remark}
+  $V$, $W$を$\KK$線形空間とし,
+  $\varphi\colon V\to W$を$\KK$線形写像とする.
+  $V=\Braket{\aaa_1,\ldots,\aaa_n}_{\KK}$,
+  $W=\Braket{\bbb_1,\ldots,\bbb_m}_{\KK}$,
+  であるとき,
+  \begin{align*}
+    \Set{(v,0_W)\in V\boxplus W|v\in V}
+    &=\Braket{(\aaa_1,0_W),\ldots,(\aaa_n,0_W)}_{\KK}\\
+    \Set{(0_V,w)\in V\boxplus W|w\in W}
+    &=\Braket{(0_V,\bbb_m),\ldots,(0_V,\bbb_m)}_{\KK}\\
+    \Set{(v,-\varphi(v))\in V\boxplus W|v\in V}
+    &=\Braket{(\aaa_1,\varphi(\aaa_1)),\ldots,(\aaa_n,\varphi(\aaa_n))}_{\KK}.
+  \end{align*}  
+\end{remark}
+\begin{remark}
+  $V$, $W$を$\KK$-線形空間とし, $\varphi\colon V\to W$を$\KK$-線形写像とする.
+  また
+  \begin{align*}
+    \tilde V &=\Set{(v,0_W)\in V\boxplus W|v\in V}\\
+    \tilde W &=\Set{(0_V,w)\in V\boxplus W|w\in W}\\
+    F&=\Set{(v,-\varphi(v))\in V\boxplus W|v\in V}
+  \end{align*}
+  とする.
+  $V$と
+  $\tilde V\subset V\boxplus W$は同型であり, $V$を$\tilde V$と同一視することで,
+  $V\boxplus W$の部分空間と思うことができる.
+  同様に$W$と
+  $\tilde W\subset V\boxplus W$は同型であり, $W$を$\tilde W$と同一視することで,
+  $V\boxplus W$の部分空間と思うことができる. 
+  商空間
+  $V\boxplus W/F$について考える.
+  $[(v,0_W)]_F-[\varphi(0_V,\varphi(v)))]_F=[(v,-\varphi(v))]_F=[(0_V,0_W)]_F$
+  であるので,
+  $[(v,0_W)]_F=[\varphi(0_V,\varphi(v)))]_F$である.
+  つまり,
+  $V\boxplus W/F$
+  においては, $v\in V$と$\varphi(v)\in W$が同一視される.
+  したがって, $v,v'\in V$が$\varphi(v)=\varphi(v')$を満たしているなら,
+  $V\boxplus W/F$においては等しいものとして扱われる.
+  実際,
+  $[(v,0_W)]_F=[\varphi(0_V,\varphi(v)))]_F=[(v',0_W)]_F$である.  
+\end{remark}
+
+これらを用い,
+$\KK^n$の部分空間$V$から
+$\KK^m$の部分空間$W$への線形写像$\varphi$
+を計算することを, 以下では考える.
+特に,
+$V=\Braket{\aaa_1,\ldots,\aaa_r}_{\KK}$とし,
+$\bbb_i=\varphi(\aaa_i)$が与えられているものとして計算方法について考える.
+
+まず, 与えられた$\vv\in V$に対し$\varphi(\vv)$を与える方法について考える.
+定義に従うと,
+$\vv=x_1\aaa_1+\cdots+x_r\aaa_r$という$x_i$に関する連立方程式をとき,
+$\varphi(\vv)=x_1\varphi(\aaa_1)+\cdots+x_r\varphi(\aaa_r)=x_1\bbb_1+\cdots+x_r\bbb_r$
+を計算すればよいことがわかる.
+一方\Cref{prop:linmap:calc:elm}に基づき,
+以下のように計算することもできる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+$\aaa_1,\ldots,\aaa_r\in \KK^n$,
+$\bbb_1,\ldots,\bbb_r\in \KK^m$,
+$\vv\in \KK^n$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $F=\Set{\begin{pmatrix}\aaa_1\\-\bbb_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_r\\-\bbb_r\end{pmatrix}}$とする.
+  \item $\bar F=\reduce(F)$とする.
+  \item $\bar \vv=\reduce(\begin{pmatrix}\vv\\\zzero_m\end{pmatrix},\bar F)$とする.
+  \item $\xx\in\KK^n$, $\yy\in\KK^m$を$\begin{pmatrix}\xx\\\yy\end{pmatrix}=\bar \vv$となるものとする.
+  \item
+    $\xx= \zzero_n$なら次を行う:
+    \begin{enumerate}
+    \item $\yy$を出力し終了.
+    \end{enumerate}
+    そうでないなら次を行う:
+    \begin{enumerate}
+    \item エラー($\vv\not\in\Braket{\aaa_1,\ldots,\aaa_r}_{\KK}$)として終了.
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+$V$の部分空間$V'=\Braket{\vv_1,\ldots,\vv_l}_{\KK}$に対し,
+$\varphi$の$V'$への制限$\varphi|_{V'}$の像
+$\Img(\varphi|_{V'})=\Set{\varphi(\vv)|\vv\in V'}$の生成系を求めることを考える.
+$\varphi(\vv_i)$を計算し,
+$(\varphi(\vv_1),\ldots,\varphi(\vv_l))$
+とすることでも求められるが,
+\Cref{prop:linmap:calc:img}に基づき,
+以下のように計算することもできる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+$\aaa_1,\ldots,\aaa_r\in \KK^n$,
+$\bbb_1,\ldots,\bbb_r\in \KK^m$,
+$\vv_1,\ldots,\vv_l\in \KK^n$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $F=\Set{\begin{pmatrix}\aaa_1\\-\bbb_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_r\\-\bbb_r\end{pmatrix}}$とする.
+  \item $V'=\Set{\begin{pmatrix}\vv_1\\\zzero_m\end{pmatrix},\ldots,\begin{pmatrix}\vv_l\\\zzero_m\end{pmatrix}}$とする.
+  \item $\bar X=\reduce(F\cup V')$とする.
+  \item $Y=\Set{\yy|\begin{pmatrix}\zzero_m\\\yy\end{pmatrix}\in \bar X}$とする.
+  \item $Y$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+次に, 与えられた$\ww\in W$に対し
+$\varphi(\vv)=\ww$を満たす$\vv\in V$を与える方法について考える.
+定義に従うと,
+$\ww=x_1\bbb_1+\cdots+x_r\bbb_r$という$x_i$に関する連立方程式をとき,
+$\vv=x_1\aaa_1+\cdots+x_r\aaa_r$
+を計算すればよいことがわかる.
+この連立方程式の解空間を求めれば,
+$\varphi(\vv)=\ww$を満たす$\vv\in V$をすべて求めることができる.
+一方
+$\varphi(\vv)=\ww$を満たす$\vv\in V$を一つ与えれば良いのであれば,
+\Cref{prop:linmap:calc:elm}に基づき,
+以下のように計算することもできる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+$\aaa_1,\ldots,\aaa_r\in \KK^n$,
+$\bbb_1,\ldots,\bbb_r\in \KK^m$,
+$\ww\in \KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $B=\Set{\begin{pmatrix}-\bbb_1\\\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}-\bbb_r\\\aaa_r\end{pmatrix}}$とする.
+  \item $\bar B=\reduce(B)$とする.
+  \item $\bar \ww=\reduce(\begin{pmatrix}\ww\\\zzero_n\end{pmatrix},\bar B)$とする.
+  \item $\xx\in\KK^n$, $\yy\in\KK^m$を$\begin{pmatrix}\yy\\\xx\end{pmatrix}=\bar \ww$となるものとする.
+  \item
+    $\yy= \zzero_m$なら次を行う:
+    \begin{enumerate}
+    \item $\xx$を出力し終了.
+    \end{enumerate}
+    そうでないなら次を行う:
+    \begin{enumerate}
+    \item エラー($\ww\not\in\Braket{\bbb_1,\ldots,\bbb_r}_{\KK}$)として終了.
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+$\ww\in W$が$\ww\in\Braket{\bbb_1,\ldots,\bbb_r}_{\KK}$
+であるとき,
+$\ww=x_1\bbb_1+\cdots+x_r\bbb_r$
+をみたす$x_i$がとれるはずである.
+この$x_i$を具体的に求めるには,
+$x_i$に関する連立方程式を解けば良い.
+具体的には,
+$(\bbb_1|\cdots|\bbb_r)\xx=\ww$
+を解けばよく, これは計算可能である.
+一方, これは,
+$\nu_{(\bbb_1,\ldots,\bbb_r)}\colon \KK^r \to W$を考えると,
+$\nu_{(\bbb_1,\ldots,\bbb_r)}(\xx)=\ww$となる$\xx$を求めるという問題である.
+このような$\xx$を一つ与えれば良いのであれば,
+$\nu_{(\bbb_1,\ldots,\bbb_r)}(\ee^{(r)}_i)=\bbb_i$
+であるので,
+以下のように求めることができる;
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  $\bbb_1,\ldots,\bbb_r\in \KK^m$,
+  $\ww\in\KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $B=\Set{\begin{pmatrix}-\bbb_1\\\ee^{(r)}_1\end{pmatrix},\ldots,\begin{pmatrix}-\bbb_r\\\ee^{(r)}_r\end{pmatrix}}$とする.
+  \item $\bar B=\reduce(B)$とする.
+  \item $\bar \ww=\reduce(\begin{pmatrix}\ww\\\zzero_r\end{pmatrix},\bar B)$とする.
+  \item $\xx\in\KK^r$, $\yy\in\KK^m$を$\begin{pmatrix}\yy\\\xx\end{pmatrix}=\bar \ww$となるものとする.
+  \item
+    $\yy= \zzero_m$なら次を行う:
+    \begin{enumerate}
+    \item $\xx$を出力し終了.
+    \end{enumerate}
+    そうでないなら次を行う:
+    \begin{enumerate}
+    \item エラー($\ww\not\in\Braket{\bbb_1,\ldots,\bbb_r}_{\KK}$)として終了.
+    \end{enumerate}
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+
+
+$W$の部分空間$W'=\Braket{\ww_1,\ldots,\ww_l}_{\KK}$に対し,
+$\Set{\vv\in V|\varphi(\vv)\in W'}$の生成系を求めることを考える.
+これは, 例えば次のように求めることができる:
+$\Ker(\varphi)$の元は,
+$\zzero_m=x_1\bbb_1+\cdots+x_r\bbb_r$という$x_i$に関する斉次連立方程式をとき,
+$\vv=x_1\aaa_1+\cdots+x_r\aaa_r$
+とおけば得られる.
+したがって,
+$\zzero_m=x_1\bbb_1+\cdots+x_r\bbb_r$という$x_i$に関する斉次連立方程式の解空間
+の生成系を求めれば,
+$\Ker(\varphi)$の生成系が与えられる.
+これを$(\uu_1,\ldots,\uu_k)$とする.
+また$\varphi(\vv_i)=\ww_i$を満たす$\vv_i\in V$を各$i$に対し求める.
+これらを合わせ
+$(\uu_1,\ldots,\uu_k,\vv_1,\ldots,\vv_l)$
+とすると$\Set{\vv\in V|\varphi(\vv)\in W'}$の生成系である.
+一方,
+\Cref{prop:linmap:calc:img}に基づき,
+以下のように計算することもできる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+$\aaa_1,\ldots,\aaa_r\in \KK^n$,
+$\bbb_1,\ldots,\bbb_r\in \KK^m$,
+$\ww_1,\ldots,\ww_l\in \KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $B=\Set{\begin{pmatrix}-\bbb_1\\\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}-\bbb_r\\\aaa_r\end{pmatrix}}$とする.
+  \item $W'=\Set{\begin{pmatrix}\ww_1\\\zzero_n\end{pmatrix},\ldots,\begin{pmatrix}\ww_l\\\zzero_n\end{pmatrix}}$とする.
+  \item $\bar X=\reduce(B\cup W')$とする.
+  \item $X=\Set{\xx|\begin{pmatrix}\zzero_m\\\xx\end{pmatrix}\in \bar X}$とする.
+  \item $X$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+$W'=\Set{\zzero_m}$のときには
+$\Ker(\varphi)=\Set{\vv\in V|\varphi(\vv)\in W'}$であるので,
+$\Ker(\varphi)$を次のように求めることもできる.
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+$\aaa_1,\ldots,\aaa_r\in \KK^n$,
+$\bbb_1,\ldots,\bbb_r\in \KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $B=\Set{\begin{pmatrix}-\bbb_1\\\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}-\bbb_r\\\aaa_r\end{pmatrix}}$とする.
+  \item $\bar X=\reduce(B)$とする.
+  \item $X=\Set{\xx|\begin{pmatrix}\zzero_m\\\xx\end{pmatrix}\in \bar X}$とする.
+  \item $X$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+$A=(\bbb_1|\cdots|\bbb_r)$とし,
+斉次連立一方程式$A\xx=\zzero_m$について考える.
+この解空間は, $A$を行基本変形をすることで求められる.
+一方$A\xx=\mu_A(\xx)=\nu_{(\bbb_1,\ldots,\bbb_r)}(\xx)$であるので,
+$A\xx=\zzero_m$の解空間は$\Ker(\nu_{(\bbb_1,\ldots,\bbb_r)})$である.
+したがって次の方法でも求められる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+$\bbb_1,\ldots,\bbb_r\in \KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $B=\Set{\begin{pmatrix}-\bbb_1\\\ee^{(r)}_1\end{pmatrix},\ldots,\begin{pmatrix}-\bbb_r\\\ee^{(r)}_r\end{pmatrix}}$とする.
+  \item $\bar X=\reduce(B)$とする.
+  \item $X=\Set{\xx|\begin{pmatrix}\zzero_m\\\xx\end{pmatrix}\in \bar X}$とする.
+  \item $X$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+このことから, 以下のことがわかる:
+\begin{remark}
+$A\in\KK^{m\times n}$とし,
+\begin{align*}
+  \shazo{\mu_A}{\KK^n}{\KK^m}
+  {\xx}{A\xx}
+\end{align*}
+について考える.
+\begin{align*}
+\begin{pmatrix}E_n\\\hline A\end{pmatrix}
+\end{align*}
+は明らかに被役列階段行列であるので, その階数は$n$である.
+したがって,
+\begin{align*}
+\begin{pmatrix}A\\\hline E_n\end{pmatrix}
+\end{align*}
+の階数も$n$である.
+これに列基本変形を行って得られる
+被役列階段行列を$\tilde(A)=(\tilde\aaa_1|\ldots|\tilde\aaa_n)$とする.
+また, 各$j$に対し, $\yy_j\in\KK^m$と$\xx_j\in\KK^n$を
+\begin{align*}
+\begin{pmatrix}\yy_j\\\hline \xx_j\end{pmatrix}
+ =\aaa_j
+\end{align*}
+となるようにとる.
+$r=\rank(A)$とし,
+  $X=(\xx_{r+1}|\cdots|\xx_{n})$,
+  $X'=(\xx_{1}|\cdots|\xx_{r})$,
+  $Y=(\yy_1|\cdots|\yy_r)$
+とおくと,
+$X$は$A$に列基本変形を行って得られる被役列階段行列であり,
+\begin{align*}
+  \tilde A =
+  \left(
+  \begin{array}{c|c}Y&O_{m,n-r}\\\hline X'&X\end{array}
+    \right)
+\end{align*}
+と書ける.
+$(\yy_1,\ldots,\yy_r)$は$\Img(\mu_A)$の基底であり
+$(\xx_{r+1},\ldots,\yy_n)$は$\Ker(\mu_A)$の基底である.
+したがって,
+\begin{align*}
+  \dim_\KK(\Img(\mu_A))+\dim_\KK(\Ker(\mu_A))=\dim_\KK(\KK^n)
+\end{align*}
+が得られる.
+これは, 次元定理\Cref{thm:dimthm}の別証明である.
+\end{remark}
+
+\begin{remark}
+  $U$を$\KK$-線形空間とし, $V$, $W$をその部分空間とする.
+  このとき,
+  \Cref{prop:directsum:inner:outer}でみた通り,
+\begin{align*}
+\shazo{\varphi}{V\boxplus W}{U}
+{(v,w)}{v+w}
+\end{align*}
+とすると,
+$\Ker(\varphi)=\Set{(u,-u) | u\in V\cap W}$
+である.
+よって,
+$\Set{u|(u,u')\in \Ker(\varphi)}=V\cap W$である.
+これを利用して, $V\cap W$を求めることを考える.
+$V=\Braket{\vv_1,\ldots,\vv_r}_\KK$,
+$W=\Braket{\ww_1,\ldots,\ww_l}_\KK$
+であるとする.
+このとき,
+\begin{align*}
+  \begin{pmatrix}
+    -\vv_1&\cdots&-\vv_r&-\ww_1&\cdots&-\ww_l\\\hline
+    \vv_1&\cdots&\vv_r&\zzero&\cdots&\zzero\\\hline
+    \zzero&\cdots&\zzero&\ww_1&\cdots&\ww_l
+  \end{pmatrix}
+\end{align*}
+を列基本変形し,
+被役列階段行列に変形し, 最上段のブロックが$\zzero$である, 列ベクトルを抜き出し最上段のブロックを忘れることで
+$\Ker(\varphi)$の生成系が得られる.
+さらに, 最下段のブロックを忘れることで, $V\cap W$が得られる.
+今回の仮定の下では,
+被役列階段行列の計算において,
+最下段のブロックはあってもなくても本質的な影響がない.
+したがって, 予め最下段のブロックを忘れ,
+\begin{align*}
+  \begin{pmatrix}
+    -\vv_1&\cdots&-\vv_r&-\ww_1&\cdots&-\ww_l\\\hline
+    \vv_1&\cdots&\vv_r&\zzero&\cdots&\zzero
+  \end{pmatrix}
+\end{align*}
+から始めても同じ結果が得られる.
+このように計算したものが\Cref{alg:intersection}
+である.
+\end{remark}
+
+
+$\KK^n$の部分空間$V$の基底$D=(\vv_1,\ldots,\vv_r)$と
+$\KK^m$の部分空間$W$の基底$B=(\ww_1,\ldots,\ww_l)$が与えられており,
+各$j\in J$に対し,
+$\varphi(\vv_j)=\aaa_j$
+を与えることにより,
+$V$から$W$への線形写像$\varphi$が
+を与えられているとする.
+このとき$\varphi$の$D$, $B$に関する
+表現行列$A=(a_{i,j})_{i\in I,j\in J}$
+(ただし, $I=\Set{1,\ldots,r}$,
+$J=\Set{1,\ldots,r}$)
+を求める方法を考える.
+$a_{i,j}$は
+$\varphi(\vv_j)=\sum_{i=1}^m a_{i,j} \ww_i$
+を満たしているので,
+$\aaa_j$を$B$の線型結合として表した際の係数を求めればよい.
+これらは, すでに見た方法で計算可能である.
+まとめると以下のようになる:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+  $\ww_1,\ldots,\ww_l\in \KK^m$,
+  $\aaa_1,\ldots,\aaa_r\in\KK^m$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $B=\Set{\begin{pmatrix}-\ww_1\\\ee^{(l)}_1\end{pmatrix},\ldots,\begin{pmatrix}-\ww_r\\\ee^{(l)}_l\end{pmatrix}}$とする.
+  \item $\bar B=\reduce(B)$とする.
+  \item $j=1,\ldots,r$に対し以下を行う
+  \begin{enumerate}
+  \item $\bar \aaa_j=\reduce(\begin{pmatrix}\aaa_j\\\zzero_l\end{pmatrix},\bar B)$とする.
+  \item $\xx_j\in\KK^l$, $\yy_j\in\KK^m$を$\begin{pmatrix}\yy_j\\\xx_j\end{pmatrix}=\bar \aaa_j$となるものとする.
+  \end{enumerate}
+  \item $A=(\xx_1|\cdots|\xx_l)$を出力し終了
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+
+\section{\Cref{chap:det}に関連すること}
+\subsection{行列式の計算について}
+
+$n$次正方行列$A=(a_{i,k})_{i\in I,j\in I}$の行列式$\det(A)$を計算する際には,
+行列式を対称群で展開した式
+\begin{align*}
+\det(A)=\sum_{\sigma\in S_n} \sgn(\sigma)a_{1,\sigma(1)}\cdots a_{n,\sigma(n)}
+\end{align*}
+を用いて計算することは少ない.
+例えば, 三角行列であれば定義に従って計算すると対角成分の積のみが現れるが,
+一般には項がたくさん現れるため効率的ではない.
+
+例えば,
+$A$の$l$行目と$k$行目を忘れることで得られる$(n-1)$-次正方行列が$\pi_{l,k}(A)$とすると以下が成り立つので,
+これを利用してサイズの小さい正方行列の行列式に帰着させる:
+\begin{theorem}
+  \label{thm:det:row:expansion}
+  $a_{i,j}$が$(i,j)$-成分である
+    $n$次正方行列$A$に対し,
+    \begin{align*}
+      \det(A)&=
+      \sum_{j=1}^{n}
+      (-1)^{t+j}a_{t,j}\det(\pi_{t,j}(A)).
+    \end{align*}
+\end{theorem}
+\begin{theorem}
+  \label{thm:det:col:expansion}
+  $a_{i,j}$が$(i,j)$-成分である
+    $n$次正方行列$A$に対し,
+    \begin{align*}
+      \det(A)&=\sum_{i=1}^{n}
+      (-1)^{i+t}a_{i,t}\det(\pi_{i,t}(A)).
+    \end{align*}
+\end{theorem}
+
+また,
+基本変形に対して以下のように振る舞うので,
+これを利用する:
+\begin{theorem}
+  $A$を$n$次正方行列とする.
+  \begin{enumerate}
+  \item 
+
+    $A$の$t$行目を$\alpha$倍して得られる行列を$A'$とすると,
+    $\det(A')=\alpha \det(A)$.
+  \item 
+    $A$の$t$行目に$s$行目の$\alpha$倍を加えて得られる行列を$A'$とすると,
+    $\det(A')=\det(A)$.
+  \item 
+    $A$の$t$行目と$s$行目を入れ替えて得られる行列を$A'$とすると,
+    $\det(A')=-\det(A)$.
+  \end{enumerate}
+\end{theorem}
+\begin{theorem}
+  $A$を$n$次正方行列とする.
+  \begin{enumerate}
+  \item 
+    $A$の$t$列目を$\alpha$倍して得られる行列を$A'$とすると,
+    $\det(A')=\alpha \det(A)$.
+  \item 
+    $A$の$t$列目に$s$列目の$\alpha$倍を加えて得られる行列を$A'$とすると,
+    $\det(A')=\det(A)$.
+  \item 
+    $A$の$t$列目と$s$列目を入れ替えて得られる行列を$A'$とすると,
+    $\det(A')=-\det(A)$.
+  \end{enumerate}
+\end{theorem}
+
+\subsection{行列式と体積について}
+ここでは$\KK=\RR$とする.
+部分集合$X\subset\RR^n$のことを図形と呼び,
+その($n$次元)体積について考える.
+
+図形$X\subset \RR^n$と方向ベクトル$\vv\in\RR^n$に対し,
+\begin{align*}
+  X+\vv=\Set{\xx+\vv|\xx\in X}
+\end{align*}
+と,
+ここでは書く.
+$X+\vv$は$X$を$\vv$方向へ$X$を平行移動した図形である.
+平行移動では$X$の体積は変化しないので,
+$X+\vv$の体積は$X$の体積と等しい.
+
+線形変換$\varphi\colon \RR^n\to \RR^n$が与えられたとき,
+図形$X\subset \RR^n$に対し,
+\begin{align*}
+  \varphi(X)=\Set{\varphi(\xx)|\xx\in X}
+\end{align*}
+と, ここでは書く.
+$\varphi(X)$は$X$を$\varphi$によって変形した図形である.
+この変形により体積はどの様に変化するか考える.
+図形$X\subset \RR^n$と方向ベクトル$\vv\in\RR^n$に対し,
+\begin{align*}
+  \varphi(X+\vv)
+  &=\Set{\varphi(\xx+\vv)|\xx\in X}\\
+  &=\Set{\varphi(\xx)+\varphi(\vv)|\xx\in X}\\
+  &=\Set{\varphi(\xx)|\xx\in X}+\varphi(\vv)\\
+  &=\varphi(X)+\varphi(\vv)
+\end{align*}
+である.
+つまり,
+$X$を平行移動したものを$\varphi$で変形したものは,
+$X$を$\varphi$で変形したものを平行移動したものとなる.
+したがって,
+原点の付近での体積変化がわかれば全体の体積変化もわかる.
+とくに, 単位立方体の体積変化がわかれば十分である.
+以下では, 記号を用意した後,
+$\varphi$による単位立方体の体積変化について考える.
+とくに$\varphi$によって, 図形の体積が何倍となるかについて考える.
+
+$\aaa_1,\ldots,\aaa_n\in\RR^n$に対し,
+\begin{align*}
+  \Xi_n(\aaa_1,\ldots,\aaa_n)
+  =\Set{c_1\aaa_1+\cdots+c_n\aaa_n|0\leq c_i\leq 1}
+\end{align*}
+とおき,
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$を
+$(\aaa_1,\ldots,\aaa_n)$で張られる$n$次元平行多面体と呼ぶことにする.
+とくに
+$\Xi_n(\ee^{(n)}_1,\ldots,\ee^{(n)}_n)$
+のことを単位立方体と呼ぶ.
+
+
+$\RR$線形写像$\varphi\colon \RR^n\to\RR^n$として
+$\mu_{(\aaa_1|\cdots|\aaa_n)}=\nu_{(\aaa_1,\ldots,\aaa_n)}$を考えると,
+単位立方体$\Xi_n(\ee^{(n)}_1,\ldots,\ee^{(n)}_n)$は,
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$に変形される.
+例えば,
+\begin{align*}
+\aaa_1&=\begin{pmatrix}2\\1\end{pmatrix},&\aaa_2&=\begin{pmatrix}1\\2\end{pmatrix}
+\end{align*}
+について考える.
+$\mu_{(\aaa_1|\aaa_2)}$と
+$\mu_{(\aaa_2|\aaa_1)}$を比較してみると,
+\begin{align*}
+\mu_{(\aaa_1|\aaa_2)}(\Xi_2(\ee^{(2)}_1,\ee^{(2)}_2))&=\Xi_2(\aaa_1,\aaa_2),
+\mu_{(\aaa_2|\aaa_1)}(\Xi_2(\ee^{(2)}_1,\ee^{(2)}_2))&=\Xi_2(\aaa_2,\aaa_1)
+\end{align*}
+となるので, どちらも図形としては同じものに変更されている.
+しかし
+$\mu_{(\aaa_1|\aaa_2)}(\ee^{(2)}_1)$から$\mu_{(\aaa_1|\aaa_2)}(\ee^{(2)}_2)$へ測った`角度'は,
+$\mu_{(\aaa_2|\aaa_1)}(\ee^{(2)}_1)$から$\mu_{(\aaa_2|\aaa_1)}(\ee^{(2)}_2)$へ
+へ測った`角度'とは正反対になっている.
+したがって, 
+$\mu_{(\aaa_1|\aaa_2)}(\ee^{(2)}_1)$から見た図形の位置と,
+$\mu_{(\aaa_2|\aaa_1)}(\ee^{(2)}_1)$から見た図形の位置は,
+正反対となっているので,
+その体積も符号が反転していると思うのは, 自然である.
+そこで体積変化としては符号付きの体積を考えることにする.
+正方行列$A$の$j$列目と$j+1$列目を入れ替えた行列を$A'$とすると,
+$\mu_{A}$での体積変化の$-1$倍が
+$\mu_{A'}$での体積変化となる.
+
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$の$n$次元体積は,
+底面の$n-1$次元体積に高さをかけたものとして求められる.
+つまり, ある$\aaa_j$に対し, 残りのベクトルで張られる
+$n-1$次元平行多面体
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\aaa_{j+1},\ldots,\aaa_n)$を($\aaa_j$に対する)底面と呼び, 点$\aaa_j$と部分空間$\Braket{\aaa_1,\ldots,\aaa_{j-1},\aaa_{j+1},\ldots,\aaa_n}_{\RR}$の`距離'を($\aaa_J$の)高さと呼んでいるが, 底面の$n-1$次元体積と高さをかけたものが,
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$の$n$次元体積となる.
+このことを利用し,
+平行多面体を張るベクトルの一部を変更したときにどう振る舞うかについて考える.
+
+まず,
+あるベクトル$\aaa_j$を$\alpha>0$倍することを考える.
+この場合, 変化するのは$\aaa_j$のみであるので,
+底面
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\aaa_{j+1},\ldots,\aaa_n)$は変化せず,
+高さのみが$\alpha$倍される.
+したがって,
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\alpha\aaa_{j},\aaa_{j+1},\ldots,\aaa_n)$の$n$次元体積は
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\aaa_{j},\aaa_{j+1},\ldots,\aaa_n)$の$n$次元体積の$\alpha$倍となる.
+$\alpha<0$であれば,
+高さの方向が正反対になることを踏まえると, 次がわかる:
+正方行列$A$の$j$列目を$\alpha$倍した行列を$A'$とすると,
+$\mu_{A}$での体積変化の$\alpha$倍が
+$\mu_{A'}$での体積変化となる.
+
+次に,
+あるベクトル$\aaa_j$に対し別の行$\aaa_i$の$\alpha$倍を加えることを考える.
+このとき, 
+底面
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\aaa_{j+1},\ldots,\aaa_n)$は変化しない.
+$\aaa_i$は底面と平行なので,
+高さも変化しない.
+したがって,
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\aaa_{j}+\alpha\aaa_i,\aaa_{j+1},\ldots,\aaa_n)$の$n$次元体積は
+$\Xi_{n-1}(\aaa_1,\ldots,\aaa_{j-1},\aaa_{j},\aaa_{j+1},\ldots,\aaa_n)$の$n$次元体積と等しい.
+高さの方向が正反対になることを踏まえると, 次がわかる:
+$i\neq j$とする.
+正方行列$A$の$j$列目に$i$列目の$\alpha$倍を加えた行列を$A'$とすると,
+$\mu_{A}$での体積変化と
+$\mu_{A'}$での体積変化は等しい.
+
+
+$\dim_\RR(\Braket{\aaa_1,\ldots,\aaa_n}_\RR)<n$であるとき,
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$は`高さ'のない図形であり,
+その$n$次元体積は$0$である.
+つまり, $(\aaa_1,\ldots,\aaa_n)$が一次従属なら
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$の$n$次元体積は$0$である.
+特に, $i\neq j$かつ$\aaa_i=\aaa_j$となる$i,j$があるなら,
+$\Xi_n(\aaa_1,\ldots,\aaa_n)$の$n$次元体積は$0$である.
+したがって,
+正方行列$A$が$\rank(A)<n$ならば,
+$\mu_{A}$で変形すると体積は$0$倍される.
+
+また, $\mu_{E_n}=\id_{\RR^n}$であるので,
+$\mu_{E_n}$で図形は変化しない.
+したがって$\mu_{E_n}$で変形すると体積は$1$倍される.
+
+これらをまとめると, 以下の通り:
+\begin{enumerate}
+\item
+  $A=E_n$または$\rank(A)<n$の場合,
+  $\mu_A$によって図形の体積は$\det(A)$倍される.
+\item
+  正方行列$A$の$j$列目を$\alpha$倍した行列を$A'$とすると,
+  $\mu_{A}$で体積が$d$倍されるなら
+  $\mu_{A'}$で体積が$\alpha d$倍される.
+  また, $\alpha \det(A)=\det(A')$である.
+\item
+  $i\neq j$とする.
+  正方行列$A$の$j$列目に$i$列目の$\alpha$倍を加えた行列を$A'$とすると,
+  $\mu_{A}$で体積が$d$倍されるなら
+  $\mu_{A'}$で体積が$d$倍される.
+  また, $\det(A)=\det(A')$である.
+\item
+  正方行列$A$の$j$列目と$j+1$列目を入れ替えた行列を$A'$とすると,
+  $\mu_{A}$で体積が$d$倍されるなら
+  $\mu_{A'}$で体積が$-d$倍される.
+  また, $-\det(A)=\det(A')$である.
+\end{enumerate}
+これらのことから,
+$A\in\RR^{n\times n}$とすると,
+$\mu_{A}$により$n$次元体積が$\det(A)$倍されることがわかる.
+
+
+\begin{remark}
+  行列式は体積の変化と関連があるため,
+  他変数の積分での変数変換などにおいて現れる.
+\end{remark}
+
+
+\section{\Cref{chap:eigen}に関連すること}
+$n$次正方行列$A\in\KK^{n\times n}$の
+固有空間や固有値を求める方法について考える.
+
+固有ベクトルの候補$\vv\in \KK^n$が与えられたとき,
+$\vv\in \KK^n$が固有ベクトルであることを示すのは簡単である.
+単に, $A\vv$を計算し$\vv$の定数倍になっていることをいうだけで良い.
+
+
+固有値$\lambda$が与えられたとき,
+その固有空間は
+\begin{align*}
+  \Set{\xx\in \KK^n|A\xx=\lambda\xx}
+\end{align*}
+であるが, これは$\tilde A=A-\lambda E_n$と書けば,
+$\xx$に関する方程式
+$\tilde A \xx=\zzero_n$
+の解空間$\Ker(\mu_{\tilde A})$である.
+したがって, $\tilde A$に行基本変形をするなどして,
+生成系を(いつでも)計算することができる.
+
+次に$A$の固有値を求める方法について考える.
+$\lambda$が$A$の固有値であるということは,
+\begin{align*}
+  \Set{\xx\in \KK^n|A\xx=\lambda\xx}\supsetneq \Set{\zzero_n}
+\end{align*}
+を満たすということであった.
+言い換えると,
+$(A-\lambda E_n)\xx=\zzero_n$という斉次連立方程式が非自明な解をもつということであるから,
+$A-\lambda E_n$が退化する$\lambda$を求めることになる.
+したがって,
+$\lambda$に関する方程式
+$\det(A-\lambda E_n)=0$
+を解けばよい.
+
+固有値と固有空間を求めるには
+一般には以下のように行うことになる:
+\begin{enumerate}
+\item
+  $x$に関する$n$次方程式
+  $\det(A-x E_n)=0$
+  を解き,
+  その解を$\lambda_1,\ldots,\lambda_k$とする.
+\item $i=1,\ldots,k$に対し以下を行う:
+  \begin{enumerate}
+  \item
+    $\xx$に関する斉次連立一次方程式
+    $(A-\lambda_i E_n)\xx=\zzero_n$
+    を解く.
+  \end{enumerate}
+\end{enumerate}
+ただし,
+$\det(A-x E_n)=0$
+は$n$次方程式であるため一般には解くのは難しい上, 解けるとも限らない.
+
+
+
+\section{\Cref{chap:diagonalize}に関連すること}
+$n$次正方行列$A\in\KK^{n\times n}$の
+対角化に関する計算について考える.
+
+一般には対角化できるとは限らない.
+行列$A$が対角化かのうであることと,
+次の条件を満たす$v_i$が取れることは同値である:
+\begin{enumerate}
+\item $(\vv_1,\ldots,\vv_n)$が一次独立
+\item  各$v_j$は$A$の固有ベクトル
+\end{enumerate}
+また, このような$v_i$が取れたとき,
+$P=(\vv_1|\cdots|\vv_n)$とおくと,
+$P^{-1}AP$は固有値を並べた対角行列となる.
+したがって, 行列の対角化をするには固有ベクトルを求めればよい.
+この計算方法についてはすでに述べた通りである.
+
+行列を対角化できると,
+例えば行列の冪の計算が簡単になる.
+一般の行列の積は成分が複雑に変化するが,
+対角行列の積は, 対応する対角成分の積を取るだけである.
+つまり,
+\begin{align*}
+D=\begin{pmatrix}\lambda_1&&\\&\ddots&\\&&\lambda_n\end{pmatrix}
+\end{align*}
+とすると,
+\begin{align*}
+D^k=\begin{pmatrix}\lambda_1^k&&\\&\ddots&\\&&\lambda_n^k\end{pmatrix}
+\end{align*}
+である,
+$D=P^{-1}AP$ならば,
+\begin{align*}
+  D^k=(P^{-1}AP)^k=P^{-1}A^kP
+\end{align*}
+であるので,
+\begin{align*}
+  A=PD^kP^{-1}
+\end{align*}
+となるので, 単純に$A^k$を計算するよりも簡単になる.
+
+また, $n$次正方複素行列に対する指数関数$\exp$を
+\begin{align*}
+\exp(A)=\sum_{k=0}\frac{1}{k!}A^k
+\end{align*}
+で定義する.
+ただし, ここでは$A^0=E_n$とする.
+この指数関数に関しても,
+$D=P^{-1}AP$ならば,
+\begin{align*}
+  \exp(A)&=\sum_{k=0}\frac{1}{k!}A^k\\
+  &=\sum_{k=0}\frac{1}{k!}PD^kP^{-1}\\
+  &=P(\sum_{k=0}\frac{1}{k!}D^k)P^{-1}\\
+  &=P(\sum_{k=0}\begin{pmatrix}\frac{1}{k!}\lambda_1^k&&\\&\ddots&\\&&\frac{1}{k!}\lambda_n^k\end{pmatrix})P^{-1}\\
+  &=P\begin{pmatrix}e^{\lambda_1}&&\\&\ddots&\\&&e^{\lambda_n}\end{pmatrix}P^{-1}
+\end{align*}
+と書ける.
+
+\begin{remark}
+  行列の羃や指数関数は,
+  漸化式で定義された数列の一般項を求めたり,
+  連立微分方程式の解を求めたりする場合に出てくる.
+\end{remark}

@@ -1,0 +1,36 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% japaneseaddonamsthm.sty
+%  This tex style file use together with amsthm.sty
+%  This provides a theorem style for japanese, i.e.,
+%     \theoremstyle{japanese}.
+%  To change the symbole to use the end of statemets,
+%  overwrite \statementendsymbol, e.g,
+%     \renewcommand{\statementendsymbol}{$\lrcorner$}.
+%
+% Author: NUmata, yacehide (nu+y at math.shinshu-u.ac.jp)
+% Lisence: GPL.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%
+% \makeatletter
+\def\th@japanese{\def\qedsymbol{\statementendsymbol}\pushQED{\qed}	%
+  \normalfont % body font
+  \thm@preskip\topsep \divide\thm@preskip\tw@%
+  \thm@postskip\thm@preskip%
+}
+%
+\@ifundefined{@popedqedthm@defined@nu@}{
+  \newcommand{\@popedqedthm@defined@nu@}{Defined}
+  \let\nous@old@endtheorem\@endtheorem
+  \def\@endtheorem{\popQED\nous@old@endtheorem}
+  }{}
+%
+\newcommand{\halfopenbox@nous@japthm}{\leavevmode%
+  \hbox to.77778em{\hfil\vrule%
+  \vbox to.675em{\hrule width.3em%
+\vfil\hrule}\vrule\hfil}}
+%
+ \providecommand{\statementendsymbol}{\halfopenbox@nous@japthm}
+ % \makeatother
+%%%%
+

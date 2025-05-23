@@ -1,0 +1,116 @@
+%%%%%%%%%%%%
+% numberedproof.sty
+% This provides the following:
+% a. A theorem style for amsthm: numberedproof
+% b. Commands to refer proof and theorem each other.
+%
+% Usuage of a.
+% 1. Use the package amsthm, as
+%     \usepackage{amsthm}
+%    in your preamble.
+% 2. Define your proof emvionment with the theorem style numberedproof, as
+%     \theoremstyle{numberedproof}
+%     \newtheorem{nproof}{Proof}
+%    in your preamble.
+%
+% Usuage of b.
+% 1. Define your numbered proof environment.
+% 2. Define your refered proof environment.
+%     \newnumberedproof{name of referered proof}{name of numbered proof}{callback for 0*}{callback for *}.
+%  where callbacks  commands with 1 var for label of proof.
+% 3. Define your labelcommand to refere from proof environment.
+%    \newprovelater{\provelater}{\callbackToAnnounceProveLater}{\callbackToAnnounceProveEachItemLater}{\callbackToAnnounceProveLater}
+%
+% 4. Put the following soon after begining some theore menvironment: 
+%     \provelater{somelabel}
+%    Also write its proof with the following:
+%     \begin{name of referered proof}{somelabel}
+% 4'. If you have items in your theorem and
+%        you want to give proof for each item, then
+%     put the following soon after begining some theore menvironment: 
+%        \provelater**{somelabelT}
+%     Also put the following soon in some item: 
+%        \provelater*{somelabelI}
+%     Write its proof with the following:
+%        \begin{name of referered proof*}{somelabelT}{somelabelI}
+%
+%
+
+\def\th@numberedproof{\pushQED{\qed}	%
+  \thm@headfont{\itshape}%
+  \normalfont % body font
+  \thm@preskip\topsep \divide\thm@preskip\tw@%
+  \thm@postskip\thm@preskip%
+}
+%
+\def\th@japanesenumberedproof{\pushQED{\qed}	%
+  \normalfont % body font
+  \thm@preskip\topsep \divide\thm@preskip\tw@%
+  \thm@postskip\thm@preskip%
+}
+
+\@ifundefined{@popedqedthm@defined@nu@}{
+  \newcommand{\@popedqedthm@defined@nu@}{Defined}
+  \let\nous@old@endtheorem\@endtheorem
+  \def\@endtheorem{\popQED\nous@old@endtheorem}
+}{}
+%\let\nous@old@endtheorem\@endtheorem
+%\def\@endtheorem{\popQED\nous@old@endtheorem}
+%
+%
+\newcommand{\nu@numberedproof@varname@prooflabellist}[1]{nu@list@prooflabel@#1}
+\newcommand{\nu@numberedproof@create@new@prooflabellist}[1]{\expandafter\def\csname \nu@numberedproof@varname@prooflabellist{#1}\endcsname{}}
+\newcommand{\nu@numberedproof@append@prooflabellist}[2]{%
+  \@ifundefined{\nu@numberedproof@varname@prooflabellist{#1}}{\nu@numberedproof@create@new@prooflabellist{#1}}{}
+  \def\nu@list@prooflabel@oldlist{\csname \nu@numberedproof@varname@prooflabellist{#1}\endcsname}\let\nu@list@prooflabel@temp\nu@list@prooflabel@oldlist\global\expandafter\edef\csname \nu@numberedproof@varname@prooflabellist{#1}\endcsname{\nu@list@prooflabel@temp,#2}}
+\newcommand{\nu@numberedproof@prooflabellist}[1]{\csname \nu@numberedproof@varname@prooflabellist{#1}\endcsname}
+
+\newcommand{\nu@numberedproof@label@S}[2]{%
+  \makebox{}%
+  \label{nu@statement@#2}%
+  \def\nu@numberedproof@statementlabel{#2}%
+  \@ifundefined{\nu@numberedproof@varname@prooflabellist{#2}}{}{#1{\nu@numberedproof@prooflabellist{#2}}}%
+%   \immediate\write\@auxout{\string\nu@numberedproof@create@new@prooflabellist{#1}}%
+}
+\newcommand{\nu@numberedproof@prove@this@later}[2]{%\makebox{}%
+  \nu@numberedproof@label@S{#1}{#2}%
+  \immediate\write\@auxout{\string\nu@numberedproof@append@prooflabellist{#2}{nu@proof@#2}}%
+}
+\newcommand{\nu@numberedproof@prove@item@later}[2]{%\makebox{}%
+  \label{nu@statement@\nu@numberedproof@statementlabel:item@#2}%
+  \immediate\write\@auxout{\string\nu@numberedproof@append@prooflabellist{\nu@numberedproof@statementlabel}{nu@proof@\nu@numberedproof@statementlabel:item@#2}}%
+#1{nu@proof@\nu@numberedproof@statementlabel:item@#2}%
+}
+\newcommand{\nu@numberedproof@prove@each@later}[2]{\@ifstar{\nu@numberedproof@label@S{#1}}{\nu@numberedproof@prove@item@later{#2}}}
+
+\newcommand{\nu@numberedproof@provelater@original}[3]{\@ifstar{\nu@numberedproof@prove@each@later{#3}{#2}}{\nu@numberedproof@prove@this@later{#1}}}
+
+
+\newcommand{\newnumberedproof}[4]{%
+  \newenvironment{#1}[1]{%
+    \begin{#2}[#3{nu@statement@##1}]%
+      \label{nu@proof@##1}%
+  }{\end{#2}}
+  \newenvironment{#1*}[2]{%
+    \begin{#2}[#4{nu@statement@##1}{nu@statement@##1:item@##2}]%
+      \label{nu@proof@##1:item@##2}%
+  }{\end{#2}}
+}
+
+\newcommand{\newprovelater}[4]{\newcommand{#1}{\nu@numberedproof@provelater@original{#2}{#3}{#4}}}
+
+\newcommand{\callbackToAnnounceTheoremProvedHere}[1]{\ref{#1}}
+\newcommand{\callbackToAnnounceTheoremItemProvedHere}[2]{\ref{#1} -- \ref{#2}}
+\newcommand{\callbackToAnnounceProveLater}[1]{\marginpar{We will show this later in \pageref{#1}.}}
+\newcommand{\callbackToAnnounceProveEachItemLater}[1]{\marginpar{We will show this later in \pageref{#1}.}}
+\newcommand{\callbackDoNothingI}[1]{}
+\newcommand{\callbackDoNothingII}[2]{}
+
+
+% Min usage:
+%\theoremstyle{numberedproof}
+%\newtheorem{numberedproof}[thm]{Proof}
+%\newnumberedproof{proofof}{numberedproof}{\callbackToAnnounceTheoremProvedHere}{\callbackToAnnounceTheoremItemProvedHere}
+%\newprovelater{\provelater}{\callbackToAnnounceProveLater}{\callbackToAnnounceProveEachItemLater}{\callbackToAnnounceProveLater}
+
+% use \provelater and \begin{proofof}
