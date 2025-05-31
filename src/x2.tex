@@ -448,8 +448,18 @@ nd{array}}
 \maketitle
 
 % Introduction
+\frontmatter
+\let\originalthesection\thesection
+\renewcommand{\thesection}{\alph{section}}
+
+\input{f.tex}
+
 
 % Main part
+\tableofcontents
+\renewcommand{\thesection}{\originalthesection}
+\mainmatter
+
 \input{p.tex}
 
 % References
@@ -459,10 +469,10 @@ nd{array}}
 \bibliographystyle{jplain}
 
 % appendix
-%\appendix
+\appendix
 %\input{e.tex}
-%\input{a.tex}
-%\input{b.tex}
+\input{a.tex}
+\input{b.tex}
 
 {\printindex}
 \end{document}
