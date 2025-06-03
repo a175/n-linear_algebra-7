@@ -1162,3 +1162,66 @@ $(w_1,\ldots,w_r)$で生成される$V$の部分空間と呼ぶ.
     \end{align*}
 \end{lemma}
 
+
+$a\in\KK^n$が与えられた部分空間に含まれるかについて調べる方法について考える.
+
+$I=\Set{1,\ldots,n}$とし,
+$a=(a_i)_{i\in I}\in \KK^n\setminus\Set{\zzero_n}$
+とする.
+$\min\Set{i\in I |a_i\neq 0}$
+を$a$のpivotもしくはleading positionと呼ぶことにし,
+$\lp(a)$で表す.
+また,
+$i_0=\lp(a)$に対し,
+$a_{i_0}=1$を満たしているときに,
+$a$はmonicであるということにする.
+また$X\subset \KK^n\setminus\Set{\zzero_n}$に対し,
+次の条件を満たしているとき, $a=(a_i)_{i\in I}\in\KK^n$は$X$で被役であるとか簡約済みであるということにする:
+\begin{align*}
+  b\in X, i=\lp(b) \implies
+  a_{i}=0.
+\end{align*}
+
+
+まずは,
+次の計算手続きを考える:
+\begin{algorithm}\makebox{}
+\begin{description}
+\item[Input]
+数ベクトル$a\in \KK^n$,
+有限集合$X\subset\KK^n\setminus\Set{\zzero_n}$.
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item $r$を$a$とする.
+  \item 条件`$r$の第$\lp(b)$成分が$0$ではない'を満たす$b\in X$がある間, 以下を繰り返す:
+    \begin{enumerate}
+    \item $b\in X$を, 条件`$r$の第$\lp(b)$成分が$0$ではない'を満たすものとする.
+    \item $i_0$を$\lp(b)$とする.
+    \item $c$を$b$の第$i_0$成分とする.
+    \item $c'$を$a$の第$i_0$成分とする.
+    \item $r$を$r-\frac{c}{c'}b$に更新する.
+    \end{enumerate}
+  \item $r$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+\newcommand{\denotes}{\mathbin{:=}}
+$\denotes$
+
+条件を満たす$b\in X$が複数あった場合の選び方を指定していないので,
+考えにくいものの,
+この手続きは有限回のステップで必ず終了し数ベクトルを出力する.
+その出力を$\reduce(a,X)$で表すことにする.
+$\reduce(a,X)$は
+$X$で簡約済みである.
+また, その作り方から,
+$\reduce(a,X)=a+\sum_{b\in X}c_{b} b$
+を満たす$c_{b}\in\KK$が存在する.
+\begin{remark}
+  なおこの手続きのように,
+  有限回のステップで必ず終了する手続きをアルゴリズムと呼ぶ.
+\end{remark}
+ただし,
+$X$の中に, $\lp(b)=\lp(b')$を満たす$b\neq b'$があったときには,
+その選び方によって出力は変化する.
