@@ -1105,6 +1105,7 @@ $(w_1,\ldots,w_r)$で生成される$V$の部分空間と呼ぶ.
 したがって,
 次が成り立つ:
 \begin{lemma}
+  \label{thm:gens:eq}
   $U$を$\KK$線形空間とする.
   $v_1,\ldots,v_n,w_1,\ldots,w_m\in U$に対し,
   以下は同値:
@@ -1322,6 +1323,14 @@ $\lp(\bbb)=\lp(\bbb')$を満たす$\bbb\neq \bbb'$があったときには,
   $(\bbb_1,\ldots,\bbb_r)$が簡約済みの生成系であるとき,
   $\reduce(\aaa,\Set{\bbb_1,\ldots,\bbb_r})$は,
   手順によらずただ一つに定まる.
+  特に,
+  $\aaa=(a_i)_{i \in I}$に対して
+  \begin{align*}
+    \reduce(\aaa,\Set{\bbb_1,\ldots,\bbb_r})
+    &=
+    \aaa-\sum_{j=1}^{r} a_{\lp(\bbb_j)}\bbb_j
+  \end{align*}
+  である.
 \end{prop}
 さらに次がわかる:
 \begin{prop}
@@ -1356,22 +1365,23 @@ $a_{\lp(\aaa)}\neq 0$であり, その逆数によるスカラー倍
   有限集合$X\subset\KK^n$.
 \item[Proceedure]\makebox{}
   \begin{enumerate}
-  \item $X\setminus\Set{b}$で簡約済みでない$b\in X$が存在する間,
+  \item $R\denotes \Set{ \aaa \in X| \aaa\neq \zzero_n}$.
+  \item $R\setminus\Set{b}$で簡約済みでない$b\in X$が存在する間,
     以下を繰り返す:
     \begin{enumerate}
-    \item $b\in X$が$X\setminus\Set{b}$で簡約済みでないとする.
-    \item $X'\denotes X\setminus\Set{b}$とする.
-    \item $a\denotes\reduce(b,X')$とする.
-    \item $a= \zzero_n$ならば, 以下を行う:
+    \item $b\in R$が$R\setminus\Set{b}$で簡約済みでないとする.
+    \item $R'\denotes R\setminus\Set{b}$とする.
+    \item $a\denotes\reduce(b,R')$とする.
+    \item $a\neq \zzero_n$ならば, 以下を行う:
       \begin{enumerate}
-      \item $X\denotes X'\cup \Set{\mono(\aaa)}$とする.
+      \item $R\denotes R'\cup \Set{\mono(\aaa)}$とする.
       \end{enumerate}
       そうでないなら, 以下を行う:
       \begin{enumerate}
-      \item $X\denotes X'$とする.
+      \item $R\denotes R'$とする.
       \end{enumerate}
     \end{enumerate}
-  \item $X$を出力し終了.
+  \item $R$を出力し終了.
   \end{enumerate}
 \end{description}
 \end{algorithm}
@@ -1396,3 +1406,232 @@ $\reduce(X)$で表すことにする.
 \end{prop}
 \begin{proof}\end{proof}
 
+次に, 
+$V=W$を判定する方法について考える.
+$v\in \Braket{\bbb_1,\ldots,\bbb_r}_\KK$が判定できるので,
+\cref{thm:gens:eq}を利用して判定することもできるが,
+簡約済みの生成系に関しては次が成り立つ.
+\begin{theorem}
+  $\aaa_1,\ldots,\aaa_r,\bbb_1,\ldots,\bbb_k\in \KK^n$とし,
+  $(\aaa_1,\ldots,\aaa_r)$は$\Braket{\aaa_1,\ldots,\aaa_r}_\KK$の簡約済みの生成系,
+  $(\bbb_1,\ldots,\bbb_k)$は$\Braket{\bbb_1,\ldots,\bbb_k}_\KK$の簡約済みの生成系とする.
+  このとき,
+  以下は同値:
+  \begin{enumerate}
+  \item $\Braket{\aaa_1,\ldots,\aaa_r}_\KK=\Braket{\bbb_1,\ldots,\bbb_k}_\KK$.
+  \item $\Set{\aaa_1,\ldots,\aaa_r}_\KK=\Set{\bbb_1,\ldots,\bbb_k}_\KK$.
+  \end{enumerate}
+\end{theorem}
+\begin{cor}
+  \Cref{alg:redens}による出力は,
+  途中の選択によらず, 入力によって一意に定まる.
+\end{cor}
+
+\begin{remark}
+ここでは,
+$\aaa=(a_i)_{i\in I}\in\KK^n\setminus\Set{\zzero_n}$に対し,
+$\lp(\aaa)$を
+$\min\Set{i|a_i\neq 0}$
+で定め, それを利用したアルゴリズムを構成した.
+$\lp(\aaa)$を定めるにあたり規則的に添字を選ぶことができれば,
+最小である必要はない.
+つまり, 以下のように定義しても, 本質的に変わらないことが簡単にわかる:
+まず, 数ベクトルの添字の集合$I=\Set{1,\ldots,n}$上の全順序$\unrhd$
+を一つ固定する.
+それに対し
+\begin{align*}
+  \lp_\unrhd(\aaa)=\max_\unrhd\Set{i|a_i\neq 0}
+\end{align*}
+  と定義する.
+つまり, すべての$i\in \Set{i|a_i\neq 0}$に対し$\lp_\unrhd(\aaa)\unrhd i$
+が成り立つとする.
+この$\lp_\unrhd$を用いて,
+\Cref{alg:redvec}を行った出力を$\reduce_\unrhd(\aaa,X)$,
+\Cref{alg:redens}を行った出力を$\reduce_\unrhd(X)$とおくと,
+$\reduce(\aaa,X)$, $\reduce(X)$と同様の定理が成り立つ.
+とくに, $\unrhd$を, $i,j\in I$に対し,
+\begin{align*}
+i\unrhd j \iff i \leq j
+\end{align*}
+と定義すると, $\lp_\unrhd = \lp$である.
+$i\unrhd j$というのは, $i$行の方が$j$行よりも上にあること(前にあること)を意味しており,
+より優先的に簡約の対象となることを意味している.
+以下では, 添字の順序を比較しているのか, 成分の大小などを比較しているのかをはっきりさせるために, 添字集合$I$上の全順序$\unrhd$を固定し, $\unrhd$を用いて記述していく.
+不慣れな場合は単純に$i\unrhd j$は$i\leq j$と読み替えても構わない.
+なお,
+$x\unrhd y$かつ$x\neq y$を表すのに$x\rhd y$と表記する.
+\end{remark}
+  
+
+
+\section{部分空間から得られる部分空間}
+\label{sec:subspace:sub}
+
+ここでは, 部分空間から新たな部分空間を構成する方法を考える.
+
+まずは, $V,W$という2つの$U$の部分空間が与えられたとき,
+その両方に含まれる部分空間について考える.
+\begin{example}
+  $U$を$\KK$-線形空間とする.
+  $V, W$を$U$の部分空間とする.
+  このとき, $V\cap W$は$U$の部分空間.
+\end{example}
+\begin{proof}\end{proof}
+\begin{prop}
+  $U$を$\KK$-線形空間とする.
+  $V, W$を$U$の部分空間とする.
+  このとき, $V\cap W$は$V$と$W$の両方に含まれる部分空間のうち最大のものである.
+\end{prop}
+
+もっと一般に次を考えることもできる.
+\begin{example}
+  $U$を$\KK$-線形空間とする.
+  $I$を集合とし,
+  $i\in I$に対し, $V_i$を$U$の部分空間とする.
+  このとき, $\bigcap_{i\in I}V_i$は$U$の部分空間である.
+\end{example}
+\begin{proof}\end{proof}
+
+
+次に, $V,W$という2つの$U$の部分空間が与えられたとき,
+その両方を含む部分空間について考える.
+
+\begin{example}
+  \label{subspace:nonexample:cup}
+  \begin{align*}
+    V&=\Set{\begin{pmatrix}a\\0\end{pmatrix}|a\in\KK}\\
+    W&=\Set{\begin{pmatrix}0\\a\end{pmatrix}|a\in\KK}
+  \end{align*}
+  とする.
+  このとき, $V$も$W$も$\KK^2$の部分空間である.
+  \begin{align*}
+    \begin{pmatrix}1\\0\end{pmatrix},
+    \begin{pmatrix}0\\1\end{pmatrix}\in V\cup W
+  \end{align*}
+  であるが,
+  \begin{align*}
+    \begin{pmatrix}1\\0\end{pmatrix}+
+    \begin{pmatrix}0\\1\end{pmatrix}=\begin{pmatrix}1\\1\end{pmatrix}\not\in V\cup W
+  \end{align*}
+  となっており, $V\cup W$は$U$の部分空間ではない.
+\end{example}
+この例からわかるように, $V\cup W$は一般には和で閉じていないので,
+部分空間とならない.
+
+\begin{example}
+  $(U,\plus ,\act,0_V)$を$\KK$-線形空間とする.
+  $V, W$を$U$の部分空間とする.
+  このとき,
+  \begin{align*}
+    V+W=\Set{v\plus w|v\in V,w\in W}
+  \end{align*}
+  とおく.
+  このとき, $V+W$は$U$の部分空間.
+  $V+W$を$V$と$W$の\defit{和空間}と呼ぶことがある.
+\end{example}
+\begin{proof}\end{proof}
+\begin{prop}
+  $(U,\plus ,\act,0_V)$を$\KK$-線形空間とし,
+  $V, W$を$U$の部分空間とする.
+  \begin{align*}
+    \SSS=\Set{U'|\text{$U'$は$U$の部分空間,} V\cup W \subset U'}
+  \end{align*}
+  とおく.  
+  \begin{align*}
+    U_0 = \bigcap_{U'\in\SSS} U'
+  \end{align*}
+  とする.  また, $\SSS$の中で包含関係で極小なものを$U_1$とする.
+  このとき,
+  \begin{align*}
+    U_0=U_1=V+W.
+  \end{align*}
+\end{prop}
+\begin{proof}
+\end{proof}
+
+\begin{definition}
+  $U$を$\KK$-線形空間とし,
+  $V$, $W$を$U$の部分空間とする.
+  次の条件を満たすとき,
+  $U$は$V$と$W$の\defit{(内部)直和に分解できる}\addindex{内部直和}\addindex{直和!内部---}という.
+  \begin{enumerate}
+  \item $U=V+W$.
+  \item $V\cap W=\Set{0_U}$.
+  \end{enumerate}
+  $U$が$V$と$W$の(内部)直和に分解できることを,
+  $U=V\oplus W$と書き表す.
+  また$V$や$W$のことを$U$の\defit{直和因子}と呼ぶことがある.
+\end{definition}
+
+\begin{prop}
+  $U=V\oplus W$であるとき,
+  $v,v'\in V$,
+  $w,w'\in W$に対し, 以下は同値:
+  \begin{enumerate}
+  \item $v\plus w=v'\plus w'$.
+  \item $v=v'$, $w=w'$.
+  \end{enumerate}
+\end{prop}
+\begin{proof}
+  \paragraph{$v\plus w=v'\plus w'\implies v=v', w=w'$}
+  $v\plus w=v'\plus w'$であるので,
+  $-v'\plus v=-w\plus w'$.
+  左辺は$V$の元, 右辺は$W$の元であるから,
+  これらは, $V\cap W$の元.
+  よって, $0_U$である.
+  $-v'\plus v=0_U$であるので, $v=v'$.
+  $-w'\plus w=0_U$であるので, $w=w'$.
+  
+  \paragraph{$v=v', w=w'\implies v\plus w=v'\plus w'$}
+  明らか.
+\end{proof}
+
+
+$U$が$U=V_1\oplus W_1$と内部直和に分解され,
+$W_1$が$V_2\oplus W_2$と内部直和に分解され,
+$W_2$が$V_3\oplus W_3$と内部直和に分解され,
+ということが繰り返された状況を考える.
+つまり,
+$U=V_1\oplus (V_2\oplus \cdots \oplus(V_{l-1}\oplus V_l))$
+と分解されていることを考える.
+\begin{definition}
+$U=V_1\oplus (V_2\oplus \cdots \oplus(V_{l-1}\oplus V_l))$
+と内部直和に分解されているとき,
+$U$は$U=V_1\oplus V_2\oplus \cdots \oplus V_l$
+と(内部)直和に分解されると言う.
+\end{definition}
+\begin{prop}
+  $(U,\plus,\ast,0_U)$を$\KK$-線形空間とし, $V_i\subset U$を$U$の部分空間とし,
+  $U=V_1+\cdots+ V_l$を満たすとする.
+  このとき, 以下は同値である:
+  \begin{enumerate}
+  \item $U=V_1\oplus \cdots \oplus V_l$と内部直和に分解される.
+  \item 全ての$i$に対して,
+    \begin{align*}
+      V_i \cap (V_1+\cdots+ V_{i-1}+V_{i+1}+\cdots+ V_{l})=\Set{0_U}.
+    \end{align*}
+  \end{enumerate}
+\end{prop}
+
+
+次に, 数ベクトル空間の部分空間について$V\cap W$や$V+W$について計算する方法について考える.
+
+特別な空間との共通部分は簡単に計算できる.
+\begin{prop}
+  $I=\Set{1,\ldots, n}$,
+  $k\in I$とする.
+  \begin{align*}
+    U=\Set{(a_i)_{i\in I}\in\KK^n| i\rhd k \implies a_i=0}
+  \end{align*}
+  とする.
+  $\bbb_1,\ldots,\bbb_r \in \KK^n \setminus\Set{\zzero_n}$とし,
+  $V=\Braket{\bbb_1,\ldots,\bbb_r}_\KK$とする.
+  $\bbb_i$のうち, $\bbb_i\in U$となるものだけを集めて,
+  $\bbb_{i_1},\ldots, \bbb_{i_d}$とする.
+  このとき,
+  $(\bbb_1,\ldots,\bbb_r)$が$V$の簡約済みの生成系ならば,
+  $(\bbb_{i_1},\ldots, \bbb_{i_d})$は
+  $V\cap U$
+  の簡約済みの生成系である.
+  
+\end{prop}
