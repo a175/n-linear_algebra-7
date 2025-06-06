@@ -1166,14 +1166,43 @@ $(w_1,\ldots,w_r)$で生成される$V$の部分空間と呼ぶ.
 
 $a\in\KK^n$が与えられた部分空間に含まれるかについて調べる方法について考える.
 そのためにいくつか記号や用語を用意する:
+以下では$\KK^n$について考える.
+$\KK^n$の元$\aaa$の添字の集合を$I$とする.
+つまり$I=\Set{1,\ldots,n}$とする.
+計算方法を考えるにあたり$I$の元の大小を比較することがある.
+この際の比較は, 成分としての実数の大小を比較するというのとは,
+役割が異なっている.
+その役割をはっきりさせるため, $\rhd$という記号を用意する.
+\begin{definition}
+  $\rhd$と$\unrhd$を,
+  $i,j\in I$に対し,
+  \begin{align*}
+    i\rhd j &\iff i \leq j,\\
+    i\unrhd j &\iff i \leq j
+  \end{align*}
+  で定義する.
+\end{definition}
+$I$は, 列ベクトル$\aaa=(a_i)_{i\in I} \in \KK^n$の添字集合である.
+$i\rhd j$というのは,
+$i$行の方が$j$行よりも上にあること (前にあること) を意味している.
+
 \begin{definition}
 $I=\Set{1,\ldots,n}$とする.
 $\aaa=(a_i)_{i\in I}\in \KK^n\setminus\Set{\zzero_n}$
 に対し,
-$\min\Set{i\in I |a_i\neq 0}$
-を$\aaa$のpivotもしくはleading positionと呼ぶことにし,
-$\lp(\aaa)$で表す.
+\begin{align*}
+  \lp(\aaa)
+  &=\max_{\unrhd} \Set{i\in I |a_i\neq 0}\\
+  &=\min\Set{i\in I |a_i\neq 0}
+\end{align*}
+とおき,
+$\lp(\aaa)$を$\aaa$のpivotもしくはleading position (もしくは先頭)
+と呼ぶことにする.
+つまり,
+すべての$i\in \Set{i\in I |a_i\neq 0}$に対し,
+$\lp(\aaa)\unrhd i$
 \end{definition}
+
 \begin{definition}
   $\aaa\in\KK^n$が以下の条件を満たすとき,
   $\aaa$はmonicであるということにする:
@@ -1182,6 +1211,7 @@ $\lp(\aaa)$で表す.
   \item $\aaa$の第$\lp(\aaa)$成分は$1$,
   \end{enumerate}
 \end{definition}
+
 \begin{definition}
   $X\subset \KK^n\setminus\Set{\zzero_n}$とする.
   次の条件を満たしているとき,
@@ -1428,38 +1458,17 @@ $v\in \Braket{\bbb_1,\ldots,\bbb_r}_\KK$が判定できるので,
 \end{cor}
 
 \begin{remark}
-ここでは,
-$\aaa=(a_i)_{i\in I}\in\KK^n\setminus\Set{\zzero_n}$に対し,
-$\lp(\aaa)$を
-$\min\Set{i|a_i\neq 0}$
-で定め, それを利用したアルゴリズムを構成した.
-$\lp(\aaa)$を定めるにあたり規則的に添字を選ぶことができれば,
-最小である必要はない.
-つまり, 以下のように定義しても, 本質的に変わらないことが簡単にわかる:
-まず, 数ベクトルの添字の集合$I=\Set{1,\ldots,n}$上の全順序$\unrhd$
-を一つ固定する.
-それに対し
-\begin{align*}
-  \lp_\unrhd(\aaa)=\max_\unrhd\Set{i|a_i\neq 0}
-\end{align*}
-  と定義する.
-つまり, すべての$i\in \Set{i|a_i\neq 0}$に対し$\lp_\unrhd(\aaa)\unrhd i$
-が成り立つとする.
-この$\lp_\unrhd$を用いて,
-\Cref{alg:redvec}を行った出力を$\reduce_\unrhd(\aaa,X)$,
-\Cref{alg:redens}を行った出力を$\reduce_\unrhd(X)$とおくと,
-$\reduce(\aaa,X)$, $\reduce(X)$と同様の定理が成り立つ.
-とくに, $\unrhd$を, $i,j\in I$に対し,
+ここでは, 
 \begin{align*}
 i\unrhd j \iff i \leq j
 \end{align*}
-と定義すると, $\lp_\unrhd = \lp$である.
-$i\unrhd j$というのは, $i$行の方が$j$行よりも上にあること(前にあること)を意味しており,
-より優先的に簡約の対象となることを意味している.
-以下では, 添字の順序を比較しているのか, 成分の大小などを比較しているのかをはっきりさせるために, 添字集合$I$上の全順序$\unrhd$を固定し, $\unrhd$を用いて記述していく.
-不慣れな場合は単純に$i\unrhd j$は$i\leq j$と読み替えても構わない.
-なお,
-$x\unrhd y$かつ$x\neq y$を表すのに$x\rhd y$と表記する.
+$\unrhd$を定め,
+この順序に基づき$\lp$を定義しアルゴリズムを構成した.
+$\lp(\aaa)$を定めるにあたり規則的に添字を選ぶことができれば,
+この順序である必要はなく,
+$\unrhd$を別の
+全順序にに取り替えて
+も同様に話は進む.
 \end{remark}
   
 
