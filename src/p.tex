@@ -1576,6 +1576,21 @@ $\unrhd$を別の
 \end{example}
 \begin{proof}\end{proof}
 
+$V\cap W$に関して次が成り立つ:
+\begin{prop}
+  \label{thm:intersection:calc}
+  $V$, $W$を$U$の部分空間とし,
+  $\widetilde V =\Set{(v,v)\in U\boxplus U|v\in V}$,
+  $\widehat W =\Set{(w,0_U)\in U\boxplus U|w\in W}$
+  $\widecheck U =\Set{(0_U,u)\in U\boxplus U|u\in U}$
+  とする.
+  \begin{align*}
+    (\widetilde V+\widehat W)\cap \widecheck U
+    =
+    \Set{(0_U,x)|x\in V\cap W}.
+  \end{align*}
+\end{prop}
+\begin{proof}\end{proof}
 
 次に, $V,W$という2つの$U$の部分空間が与えられたとき,
 その両方を含む部分空間について考える.
@@ -1719,28 +1734,10 @@ $U$は$U=V_1\oplus V_2\oplus \cdots \oplus V_l$
   の簡約済みの生成系である.
 \end{prop}
 
-\begin{prop}
-  $V$, $W$を$\KK^n$の部分空間とする.
-  $\aaa=(a_i)_{i\in I}\in\KK^n$に対し,
-  $\KK^{2n}$の元$\widetilde \aaa$, $\widehat \aaa$, $\widecheck \aaa$を
-  \begin{align*}
-   \widetilde\aaa&=\begin{pmatrix}a_1\\\vdots\\a_n\\a_1\\\vdots\\a_n\end{pmatrix},
-   &\widehat\aaa&=\begin{pmatrix}a_1\\\vdots\\a_n\\0\\\vdots\\0\end{pmatrix},
-   &\widecheck\aaa&=\begin{pmatrix}0\\\vdots\\0\\a_1\\\vdots\\a_n\end{pmatrix}
-  \end{align*}
-  で定義し,
-  $\KK^{2n}$の部分空間$\widetilde V$と$\widehat W$を次で定義する:
-  \begin{align*}
-    \widetilde V&=\Set{\widetilde\aaa| \aaa\in V}
-    &\widehat W&=\Set{\widehat\aaa| \aaa\in W}
-  \end{align*}
-  このとき,
-  \begin{align*}
-    W\cap V = \Set{\aaa \in \KK^n | \widecheck\aaa \in \widetilde V\cap \widehat W}.
-  \end{align*}
-\end{prop}
-\begin{proof}\end{proof}
-
+また,
+一般の部分空間の場合には
+\Cref{thm:intersection:calc}
+を使い計算することができる.
 アルゴリズムとして書くなら以下のようになる:
 \begin{algorithm}\label{alg:intersection}\makebox{}
 \begin{description}
@@ -1749,14 +1746,13 @@ $U$は$U=V_1\oplus V_2\oplus \cdots \oplus V_l$
 \item[Proceedure]\makebox{}
   \begin{enumerate}
   \item
-    $\widetilde A=\Set{\begin{pmatrix}\aaa_1\\\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_n\\\aaa_n\end{pmatrix}}$
+    $\widetilde A=\Set{\begin{pmatrix}\aaa_1\\\hline\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_n\\\hline\aaa_n\end{pmatrix}}$
     とする.
   \item
-    $\widehat B=\Set{\begin{pmatrix}\bbb_1\\\zzero_m\end{pmatrix},\ldots,\begin{pmatrix}\bbb_l\\\zzero_m\end{pmatrix}}$
+    $\widehat B=\Set{\begin{pmatrix}\bbb_1\\\hline\zzero_m\end{pmatrix},\ldots,\begin{pmatrix}\bbb_l\\\hline\zzero_m\end{pmatrix}}$
     とする.
   \item $X=\reduce(\widetilde A\cup \widehat B)$とする.
-  \item $\widecheck X=\Set{\begin{pmatrix}\aaa\\\bbb\end{pmatrix}\in X|\aaa=\zzero_m}$とする.
-  \item $\Set{\bbb|\begin{pmatrix}\zzero_m\\\bbb\end{pmatrix}\in\widecheck X}$を出力し終了.
+  \item $\Set{\bbb|\begin{pmatrix}\aaa\\\hline\bbb\end{pmatrix}\in\widecheck X,\ \aaa=\zzero_m}$を出力し終了.
   \end{enumerate}
 \end{description}
 \end{algorithm}
