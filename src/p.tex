@@ -573,6 +573,51 @@ $\RR$から$\RR$の関数をすべて集めた集合を$V$とおく.
 %%   通常の和と積で$\QQ$-線形空間.
 %% \end{example}
 
+また,
+次のように,
+与えられた
+$\KK$-線形空間
+から
+$\KK$-線形空間
+を作ることもできる.
+\begin{example}
+  $(V,\plus,\act,0_V)$, $(W,\pplus,\aact,0_W)$を$\KK$-線形空間とする.
+\begin{align*}
+V\boxplus W = \Set{(v,w)|v\in V, w\in W}
+\end{align*}
+とし, $(v,w),(v',w')\in V\boxplus W$, $\alpha\in\KK$に対し,
+$(v,w)+(v',w')$, $\alpha(v,w)$を以下で定める:
+\begin{align*}
+(v,w)+(v',w')&=(v\plus v', w\pplus w')\\
+\alpha(v,w)&=(\alpha\act v,\alpha\aact w).
+\end{align*}
+このとき,
+$V\boxplus W$は, これらの演算で, $(0_V,0_W)$を零元とする
+$\KK$線形空間である.
+これを,
+$V$と$W$の
+\defit{外部直和}%
+\addindex{直和!外部---}%
+%\Defit{直和}%
+と呼ぶ.
+
+$V_1,\ldots, V_n$という$n$個の$\KK$線形空間が与えられたとき,
+\begin{align*}
+V_1\boxplus \cdots \boxplus V_n = \Set{(v_1,\ldots,v_n)|v_i\in V_i}
+\end{align*}
+とおくと,
+$V\boxplus W$と同様に,
+$\KK$線形空間である.
+これを, 
+$V_1,\ldots, V_n$の外部直和と呼ぶ.
+\end{example}
+\begin{remark}
+外部直和を$\oplus$で表し
+直和と呼ぶこともあるが,
+本原稿では,
+後ほど定義する内部直和分解の記号と区別するため,
+外部直和は$\boxplus$で表し区別する.
+\end{remark}
 
 
 \section{線形写像と同型写像}
@@ -692,6 +737,36 @@ $f\in V$に対し, $f$の微分を対応させる写像
   $\RR$-線形空間として$\RR^2\simeq\CC$である.
 \end{example}
 
+\begin{example}
+  $\aaa\in\KK^n$と$\bbb\in \KK^m$に対し,
+  それらの成分を縦に並べて得られる$\KK^{n+m}$の元を
+  \begin{align*}
+      \begin{pmatrix}
+      \aaa\\\hline
+      \bbb
+      \end{pmatrix}
+  \end{align*}
+  と書くことにする. つまり
+  \begin{align*}
+    \aaa&=\begin{pmatrix}a_1\\\vdots\\a_n\end{pmatrix}
+   & \bbb&=\begin{pmatrix}b_1\\\vdots\\b_m\end{pmatrix}
+  \end{align*}
+  に対し,
+  \begin{align*}
+    \begin{pmatrix}
+      \aaa\\\hline
+      \bbb
+      \end{pmatrix}
+   &=\begin{pmatrix}a_1\\\vdots\\a_n\\b_1\\\vdots\\b_m\end{pmatrix}
+  \end{align*}
+  とする.
+  この表記法の下,
+  \begin{align*}
+    \shazo{\varphi}{\KK^n\boxplus\KK^m}{\KK^{n+m}}
+          {(\aaa,\bbb)}{\begin{pmatrix}\aaa\\\hline\bbb\end{pmatrix}}
+  \end{align*}
+  とすると, $\varphi$は同型写像である.
+\end{example}
 
 
 \begin{remark}
@@ -769,7 +844,7 @@ $\sum_{i=1}^n v_i$を次で定義する:
 \sum_{i=1}^n v_i
 =
 \begin{cases}
-\left(\sum_{i=1}^{-1} v_i\right)\plus v_n& (n>1)\\
+\left(\sum_{i=1}^{n-1} v_i\right)\plus v_n& (n>1)\\
 a_1&n=1.
 \end{cases}
 \end{align*}
@@ -778,7 +853,7 @@ $I=\Set{j_1,\ldots,j_n}$とし,
 $\sum_{i\in I} v_i$を
 \begin{align*}
 \sum_{i\in I} v_i
-\sum_{k=1}^n v_{j_k}
+=\sum_{k=1}^n v_{j_k}
 \end{align*}
 で定義する.
 和$\plus$は
@@ -789,13 +864,13 @@ $I=\Set{j_1,\ldots,j_n}$の選び方に依らない.
 \end{remark}
 
 
-\begin{remark}
-  $\KK$-線形空間の定義において,
-  その条件の中に, $\KK$の割り算は現れない.
-  したがって,
-  これらの条件を, ある環に対して満たすものという概念を定義することができる.
-  環$R$に対して定義された$R$-線形空間を通常は$R$-加群 ($R$-module) と呼ぶ.
-\end{remark}
+%% \begin{remark}
+%%   $\KK$-線形空間の定義において,
+%%   その条件の中に, $\KK$の割り算は現れない.
+%%   したがって,
+%%   これらの条件を, ある環に対して満たすものという概念を定義することができる.
+%%   環$R$に対して定義された$R$-線形空間を通常は$R$-加群 ($R$-module) と呼ぶ.
+%% \end{remark}
 
 \begin{prop}
   \label{prop:zeroveciszeroscalar}
@@ -1177,7 +1252,7 @@ $\KK^n$の元$\aaa$の添字の集合を$I$とする.
   $\rhd$と$\unrhd$を,
   $i,j\in I$に対し,
   \begin{align*}
-    i\rhd j &\iff i \leq j,\\
+    i\rhd j &\iff i < j,\\
     i\unrhd j &\iff i \leq j
   \end{align*}
   で定義する.
@@ -1642,5 +1717,55 @@ $U$は$U=V_1\oplus V_2\oplus \cdots \oplus V_l$
   $(\bbb_{i_1},\ldots, \bbb_{i_d})$は
   $V\cap U_k$
   の簡約済みの生成系である.
-  
+\end{prop}
+
+\begin{prop}
+  $V$, $W$を$\KK^n$の部分空間とする.
+  $\aaa=(a_i)_{i\in I}\in\KK^n$に対し,
+  $\KK^{2n}$の元$\widetilde \aaa$, $\widehat \aaa$, $\widecheck \aaa$を
+  \begin{align*}
+   \widetilde\aaa&=\begin{pmatrix}a_1\\\vdots\\a_n\\a_1\\\vdots\\a_n\end{pmatrix},
+   &\widehat\aaa&=\begin{pmatrix}a_1\\\vdots\\a_n\\0\\\vdots\\0\end{pmatrix},
+   &\widecheck\aaa&=\begin{pmatrix}0\\\vdots\\0\\a_1\\\vdots\\a_n\end{pmatrix}
+  \end{align*}
+  で定義し,
+  $\KK^{2n}$の部分空間$\widetilde V$と$\widehat W$を次で定義する:
+  \begin{align*}
+    \widetilde V&=\Set{\widetilde\aaa| \aaa\in V}
+    &\widehat W&=\Set{\widehat\aaa| \aaa\in W}
+  \end{align*}
+  このとき,
+  \begin{align*}
+    W\cap V = \Set{\aaa \in \KK^n | \widecheck\aaa \in \widetilde V\cap \widehat W}.
+  \end{align*}
+\end{prop}
+\begin{proof}\end{proof}
+
+アルゴリズムとして書くなら以下のようになる:
+\begin{algorithm}\label{alg:intersection}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A,B\subset \KK^n$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item
+    $\widetilde A=\Set{\begin{pmatrix}\aaa_1\\\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_n\\\aaa_n\end{pmatrix}}$
+    とする.
+  \item
+    $\widehat B=\Set{\begin{pmatrix}\bbb_1\\\zzero_m\end{pmatrix},\ldots,\begin{pmatrix}\bbb_l\\\zzero_m\end{pmatrix}}$
+    とする.
+  \item $X=\reduce(\widetilde A\cup \widehat B)$とする.
+  \item $\widecheck X=\Set{\begin{pmatrix}\aaa\\\bbb\end{pmatrix}\in X|\aaa=\zzero_m}$とする.
+  \item $\Set{\bbb|\begin{pmatrix}\zzero_m\\\bbb\end{pmatrix}\in\widecheck X}$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+\begin{prop}
+  \Cref{alg:intersection}は有限回のステップで終了し,
+  $\KK^n$の有限部分集合を出力する.
+\end{prop}
+
+\begin{prop}
+  \Cref{alg:intersection}の出力は,
+  $\Braket{A}_\KK\cap \Braket{B}_\KK$の簡約済みの生成系である.  
 \end{prop}

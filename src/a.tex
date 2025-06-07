@@ -341,68 +341,6 @@ $\KK^m$の部分空間
 \end{description}
 \end{algorithm}
 
-共通部分を計算するには, 次の補題を使う.
-\begin{lemma}
-  $U$を$\KK$-線形空間とし,
-  $V,W$を$U$の部分空間とする.
-  このとき,
-  \begin{align*}
-    \tilde V&=\Set{(v,-v)\in U\boxplus U|v\in V} \\
-    \check W&=\Set{(w,0_U)\in U\boxplus U|w\in W} \\
-    \hat U&=\Set{(0_U,u)\in U\boxplus U|u\in U}
-  \end{align*}
-  とおく.
-  また,
-  \begin{align*}
-    \check X &= (\tilde V + \check W) \cap \hat U \\
-    X&=\Set{x|(0_U,x) \in\check X}
-  \end{align*}
-  とする.
-  このとき, $X=V\cap W$.
-\end{lemma}
-この補題により共通部分は以下のように計算できる.
-\begin{prop}
-  $\aaa_1,\ldots,\aaa_n,\bbb_1,\ldots,\bbb_l\in\KK^m$に対し,
-  \begin{align*}
-    X=\reduce(\Set{
-    \begin{pmatrix}\aaa_1\\-\aaa_1\end{pmatrix},
-      \ldots,
-      \begin{pmatrix}\aaa_n\\-\aaa_n\end{pmatrix},
-      \begin{pmatrix}\bbb_1\\\zzero_m\end{pmatrix},
-      \ldots,
-      \begin{pmatrix}\bbb_l\\\zzero_m\end{pmatrix}
-})
-  \end{align*}
-  とし,
-  \begin{align*}
-    \check X=\Set{\begin{pmatrix}\aaa\\\bbb\end{pmatrix}\in X|\aaa=\zzero_m}
-  \end{align*}
-  とする.
-  $\check X=\Set{\ccc_1,\ldots,\ccc_k}$
-  とすると,
-  \begin{align*}
-    \Braket{\aaa_1,\ldots,\aaa_n}\cap \Braket{\bbb_1,\ldots,\bbb_l}=\Braket{\ccc_1,\ldots,\ccc_k}.
-  \end{align*}
-\end{prop}
-アルゴリズムとして書くなら以下のようになる:
-\begin{algorithm}\label{alg:intersection}\makebox{}
-\begin{description}
-\item[Input]
-  有限集合$A,B\subset \KK^m$
-\item[Proceedure]\makebox{}
-  \begin{enumerate}
-  \item
-    $\tilde A=\Set{\begin{pmatrix}\aaa_1\\-\aaa_1\end{pmatrix},\ldots,\begin{pmatrix}\aaa_n\\-\aaa_n\end{pmatrix}}$
-    とする.
-  \item
-    $\tilde B=\Set{\begin{pmatrix}\bbb_1\\\zzero_m\end{pmatrix},\ldots,\begin{pmatrix}\bbb_l\\\zzero_m\end{pmatrix}}$
-    とする.
-  \item $X=\reduce(\tilde A\cup \tilde B)$とする.
-  \item $\check X=\Set{\begin{pmatrix}\aaa\\\bbb\end{pmatrix}\in \tilde X|\aaa=\zzero_m}$とする.
-  \item $\Set{\bbb|\begin{pmatrix}\zzero_m\\\bbb\end{pmatrix}\in\check X}$を出力し終了.
-  \end{enumerate}
-\end{description}
-\end{algorithm}
 
 \section{\Cref{chap:basis}に関連すること}
 
