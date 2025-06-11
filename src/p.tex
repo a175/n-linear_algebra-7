@@ -1715,6 +1715,16 @@ $U$は$U=V_1\oplus V_2\oplus \cdots \oplus V_l$
 
 次に, 数ベクトル空間の部分空間について$V\cap W$や$V+W$について計算する方法について考える.
 
+例えば,
+$V=\Braket{\ee^{(2)}_1,\ee_2^{(2)}}_\KK$,
+$W=\Braket{\ee^{(2)}_1+\ee^{(2)}_2}$
+とすると,
+$V=\RR^2$であるから, $V\cap W=W$である.
+一方, 生成系を考えると,
+$\Set{\ee^{(2)}_1,\ee_2^{(2)}}\cap \Set{\ee^{(2)}_1+\ee^{(2)}}=\emptyset$
+であり,
+単純に生成系の共通部分の計算すればよいというわけではない.
+  
 特別な空間との共通部分は簡単に計算できる.
 \begin{prop}
   $I=\Set{1,\ldots, n}$とする.
@@ -1765,3 +1775,47 @@ $U$は$U=V_1\oplus V_2\oplus \cdots \oplus V_l$
   \Cref{alg:intersection}の出力は,
   $\Braket{A}_\KK\cap \Braket{B}_\KK$の簡約済みの生成系である.  
 \end{prop}
+
+次に和空間について考える.
+これは単純に生成系の和集合を取れば良い.
+つまり,
+次が成り立つ:
+\begin{prop}
+  $\aaa_1,\ldots,\aaa_r,\bbb_1,\ldots,\bbb_k\in \KK^n$とする.
+  このとき,
+  \begin{align*}
+    \Braket{\aaa_1,\ldots,\aaa_r,\bbb_1,\ldots,\bbb_k}_{\KK}
+    =
+    \Braket{\aaa_1,\ldots,\aaa_r}_\KK+\Braket{\bbb_1,\ldots,\bbb_k}_{\KK}.
+  \end{align*}
+\end{prop}
+$V+W$の簡約済みの生成系をもとめる方法を
+アルゴリズムとして書くなら以下のように書ける:
+\begin{algorithm}\label{alg:joinspace}\makebox{}
+\begin{description}
+\item[Input]
+  有限集合$A,B\subset \KK^n$
+\item[Proceedure]\makebox{}
+  \begin{enumerate}
+  \item
+    $X=\reduce( A\cup B)$とする.
+  \item
+    $X$を出力し終了.
+  \end{enumerate}
+\end{description}
+\end{algorithm}
+
+\begin{prop}
+  \Cref{alg:joinspace}は有限回のステップで終了し,
+  $\KK^n$の有限部分集合を出力する.
+\end{prop}
+
+\begin{prop}
+  \Cref{alg:joinspace}の出力は,
+  $\Braket{A}_\KK+ \Braket{B}_\KK$の簡約済みの生成系である.  
+\end{prop}
+
+
+和空間が内部直和となっていかどうかについては,
+共通部分を計算すればよいので,
+すでに計算可能である.
